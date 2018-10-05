@@ -14,11 +14,6 @@ import Task exposing (perform)
 import Tuple exposing (..)
 
 
-
--- import Svg.Attributes as SvgA
--- MAIN
-
-
 main =
     Browser.element
         { init = init
@@ -146,28 +141,41 @@ view model =
             [ SVGA.height (model.screenSize.height |> fromFloat)
             , SVGA.width (model.screenSize.width |> fromFloat)
             ]
-            [ rect
-                [ SVGA.y (model.unitCircle.boundingBoxTopLeft |> first |> fromFloat)
-                , SVGA.x (model.unitCircle.boundingBoxTopLeft |> second |> fromFloat)
-                , SVGA.height (model.unitCircle.radius * 2 |> fromFloat)
-                , SVGA.width (model.unitCircle.radius * 2 |> fromFloat)
-                , SVGA.stroke "black"
-                , SVGA.fillOpacity "0"
-                ]
-                []
-            , circle
-                [ SVGA.cx (model.unitCircle.center |> second |> fromFloat)
-                , SVGA.cy (model.unitCircle.center |> first |> fromFloat)
-                , SVGA.r "6"
-                ]
-                []
-            , circle
-                [ SVGA.cx (model.unitCircle.center |> second |> fromFloat)
-                , SVGA.cy (model.unitCircle.center |> first |> fromFloat)
-                , SVGA.r (model.unitCircle.radius |> fromFloat)
-                , SVGA.fillOpacity "0"
-                , SVGA.stroke "black"
-                ]
-                []
+            [ viewBoundingBox model.unitCircle.boundingBoxTopLeft
+                model.unitCircle.radius
+            , viewCenter model.unitCircle.center
+            , viewUnitCircle model.unitCircle.center model.unitCircle.radius
             ]
         ]
+
+
+viewBoundingBox topLeftPoint radius =
+    rect
+        [ SVGA.y (topLeftPoint |> first |> fromFloat)
+        , SVGA.x (topLeftPoint |> second |> fromFloat)
+        , SVGA.height (radius * 2 |> fromFloat)
+        , SVGA.width (radius * 2 |> fromFloat)
+        , SVGA.stroke "black"
+        , SVGA.fillOpacity "0"
+        ]
+        []
+
+
+viewCenter center =
+    circle
+        [ SVGA.cx (center |> second |> fromFloat)
+        , SVGA.cy (center |> first |> fromFloat)
+        , SVGA.r "6"
+        ]
+        []
+
+
+viewUnitCircle center radius =
+    circle
+        [ SVGA.cx (center |> second |> fromFloat)
+        , SVGA.cy (center |> first |> fromFloat)
+        , SVGA.r (radius |> fromFloat)
+        , SVGA.fillOpacity "0"
+        , SVGA.stroke "black"
+        ]
+        []
