@@ -144,9 +144,38 @@ view model =
             [ viewBoundingBox model.unitCircle.boundingBoxTopLeft
                 model.unitCircle.radius
             , viewCenter model.unitCircle.center
-            , viewUnitCircle model.unitCircle.center model.unitCircle.radius
+            , viewUnitCircle model.unitCircle.center
+                (model.unitCircle.radius / 5)
+            , viewXAxis model.unitCircle.center model.screenSize.width
+            , viewYAxis model.unitCircle.center model.screenSize.height
             ]
         ]
+
+
+viewYAxis center height =
+    line
+        [ SVGA.x1 (center |> second |> fromFloat)
+        , SVGA.y1 (0 |> fromFloat)
+        , SVGA.x2 (center |> second |> fromFloat)
+        , SVGA.y2 (height |> fromFloat)
+        , SVGA.strokeWidth "1"
+        , SVGA.stroke "red"
+        , SVGA.strokeDasharray "5, 5"
+        ]
+        []
+
+
+viewXAxis center width =
+    line
+        [ SVGA.x1 (0 |> fromFloat)
+        , SVGA.y1 (center |> first |> fromFloat)
+        , SVGA.x2 (width |> fromFloat)
+        , SVGA.y2 (center |> first |> fromFloat)
+        , SVGA.strokeWidth "1"
+        , SVGA.stroke "red"
+        , SVGA.strokeDasharray "5, 5"
+        ]
+        []
 
 
 viewBoundingBox topLeftPoint radius =
