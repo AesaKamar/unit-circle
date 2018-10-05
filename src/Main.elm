@@ -6,6 +6,7 @@ import Browser.Events exposing (..)
 import Html exposing (..)
 import Html.Attributes as HTMLA
 import Html.Events exposing (..)
+import Json.Decode exposing (Decoder, field, float, map)
 import Random
 import String exposing (fromFloat)
 import Svg exposing (..)
@@ -34,6 +35,7 @@ type alias Model =
         , boundingBoxTopLeft : Coord
         , radius : Float
         }
+    , activePoint : Coord2D
     }
 
 
@@ -45,6 +47,7 @@ init _ =
             , boundingBoxTopLeft = ( 0, 0 )
             , radius = 0
             }
+      , activePoint = { x = 0, y = 0 }
       }
     , perform
         (\x ->
@@ -65,12 +68,17 @@ type alias Coord =
     ( Float, Float )
 
 
+type alias Coord2D =
+    { x : Float, y : Float }
+
+
 type alias Size2d =
     { height : Float, width : Float }
 
 
 type Msg
     = ScreenResize Size2d
+    | MouseHover Coord2D
 
 
 constrainToSquare : Size2d -> Size2d
@@ -110,6 +118,15 @@ update msg model =
                         )
                     , radius = radius
                     }
+              , activePoint = model.activePoint
+              }
+            , Cmd.none
+            )
+
+        MouseHover coord ->
+            ( { screenSize = model.screenSize
+              , unitCircle = model.unitCircle
+              , activePoint = coord
               }
             , Cmd.none
             )
@@ -121,13 +138,23 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    onResize
-        (\x y ->
-            ScreenResize
-                { height = y |> toFloat
-                , width = x |> toFloat
-                }
-        )
+    Sub.batch
+        [ onResize
+            (\x y ->
+                ScreenResize
+                    { height = y |> toFloat
+                    , width = x |> toFloat
+                    }
+            )
+        , onMouseMove
+            (Json.Decode.map
+                MouseHover
+                (Json.Decode.map2 Coord2D
+                    (field "screenX" float)
+                    (field "screenY" float)
+                )
+            )
+        ]
 
 
 
@@ -143,11 +170,16 @@ view model =
             ]
             [ viewBoundingBox model.unitCircle.boundingBoxTopLeft
                 model.unitCircle.radius
-            , viewCenter model.unitCircle.center
+
+            -- , viewCenter model.unitCircle.center
             , viewUnitCircle model.unitCircle.center
                 (model.unitCircle.radius / 5)
             , viewXAxis model.unitCircle.center model.screenSize.width
             , viewYAxis model.unitCircle.center model.screenSize.height
+            , Html.text
+                (model.activePoint.x |> fromFloat)
+            , Html.text
+                (model.activePoint.y |> fromFloat)
             ]
         ]
 
