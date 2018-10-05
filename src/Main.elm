@@ -31,8 +31,8 @@ main =
 type alias Model =
     { screenSize : Size2d
     , unitCircle :
-        { center : Coord
-        , boundingBoxTopLeft : Coord
+        { center : Coord2D
+        , boundingBoxTopLeft : Coord2D
         , radius : Float
         }
     , activePoint : Coord2D
@@ -43,8 +43,8 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( { screenSize = { height = 0, width = 0 }
       , unitCircle =
-            { center = ( 0, 0 )
-            , boundingBoxTopLeft = ( 0, 0 )
+            { center = { x = 0, y = 0 }
+            , boundingBoxTopLeft = { x = 0, y = 0 }
             , radius = 0
             }
       , activePoint = { x = 0, y = 0 }
@@ -62,10 +62,6 @@ init _ =
 
 
 -- UPDATE
-
-
-type alias Coord =
-    ( Float, Float )
 
 
 type alias Coord2D =
@@ -90,9 +86,9 @@ constrainToSquare size2d =
     { height = lowerBound, width = lowerBound }
 
 
-calculateCenter : Size2d -> Coord
+calculateCenter : Size2d -> Coord2D
 calculateCenter size2d =
-    ( size2d.height / 2, size2d.width / 2 )
+    { y = size2d.height / 2, x = size2d.width / 2 }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -103,7 +99,7 @@ update msg model =
                 constrainingSquare =
                     constrainToSquare resizedScreen
 
-                ( cy, cx ) =
+                center =
                     calculateCenter resizedScreen
 
                 radius =
@@ -111,11 +107,11 @@ update msg model =
             in
             ( { screenSize = resizedScreen
               , unitCircle =
-                    { center = ( cy, cx )
+                    { center = center
                     , boundingBoxTopLeft =
-                        ( cy - radius
-                        , cx - radius
-                        )
+                        { y = center.y - radius
+                        , x = center.x - radius
+                        }
                     , radius = radius
                     }
               , activePoint = model.activePoint
@@ -150,11 +146,31 @@ subscriptions model =
             (Json.Decode.map
                 MouseHover
                 (Json.Decode.map2 Coord2D
-                    (field "screenX" float)
-                    (field "screenY" float)
+                    (field "clientX" float)
+                    (field "clientY" float)
                 )
             )
         ]
+
+
+snapToUnitCircle : Coord2D -> Float -> Coord2D -> Coord2D
+snapToUnitCircle center radius coord2D =
+    let
+        normalized =
+            { x = coord2D.x - center.x
+            , y = coord2D.y - center.y
+            }
+
+        hypotenuse =
+            sqrt ((normalized.x ^ 2) + (normalized.y ^ 2))
+    in
+    if hypotenuse == 0 then
+        { x = center.x + radius, y = center.y }
+
+    else
+        { x = (normalized.x * radius / hypotenuse) + center.x
+        , y = (normalized.y * radius / hypotenuse) + center.y
+        }
 
 
 
@@ -172,6 +188,7 @@ view model =
                 model.unitCircle.radius
 
             -- , viewCenter model.unitCircle.center
+            , viewLocatedPointOnUnitCircle model.unitCircle.center (model.unitCircle.radius / 5) model.activePoint
             , viewUnitCircle model.unitCircle.center
                 (model.unitCircle.radius / 5)
             , viewXAxis model.unitCircle.center model.screenSize.width
@@ -184,11 +201,24 @@ view model =
         ]
 
 
+viewLocatedPointOnUnitCircle center radius currentPos =
+    let
+        snapped =
+            snapToUnitCircle center radius currentPos
+    in
+    circle
+        [ SVGA.cx (snapped.x |> fromFloat)
+        , SVGA.cy (snapped.y |> fromFloat)
+        , SVGA.r "6"
+        ]
+        []
+
+
 viewYAxis center height =
     line
-        [ SVGA.x1 (center |> second |> fromFloat)
+        [ SVGA.x1 (center.x |> fromFloat)
         , SVGA.y1 (0 |> fromFloat)
-        , SVGA.x2 (center |> second |> fromFloat)
+        , SVGA.x2 (center.x |> fromFloat)
         , SVGA.y2 (height |> fromFloat)
         , SVGA.strokeWidth "1"
         , SVGA.stroke "red"
@@ -200,9 +230,9 @@ viewYAxis center height =
 viewXAxis center width =
     line
         [ SVGA.x1 (0 |> fromFloat)
-        , SVGA.y1 (center |> first |> fromFloat)
+        , SVGA.y1 (center.y |> fromFloat)
         , SVGA.x2 (width |> fromFloat)
-        , SVGA.y2 (center |> first |> fromFloat)
+        , SVGA.y2 (center.y |> fromFloat)
         , SVGA.strokeWidth "1"
         , SVGA.stroke "red"
         , SVGA.strokeDasharray "5, 5"
@@ -212,8 +242,8 @@ viewXAxis center width =
 
 viewBoundingBox topLeftPoint radius =
     rect
-        [ SVGA.y (topLeftPoint |> first |> fromFloat)
-        , SVGA.x (topLeftPoint |> second |> fromFloat)
+        [ SVGA.y (topLeftPoint.y |> fromFloat)
+        , SVGA.x (topLeftPoint.x |> fromFloat)
         , SVGA.height (radius * 2 |> fromFloat)
         , SVGA.width (radius * 2 |> fromFloat)
         , SVGA.stroke "black"
@@ -224,8 +254,8 @@ viewBoundingBox topLeftPoint radius =
 
 viewCenter center =
     circle
-        [ SVGA.cx (center |> second |> fromFloat)
-        , SVGA.cy (center |> first |> fromFloat)
+        [ SVGA.cx (center.x |> fromFloat)
+        , SVGA.cy (center.y |> fromFloat)
         , SVGA.r "6"
         ]
         []
@@ -233,8 +263,8 @@ viewCenter center =
 
 viewUnitCircle center radius =
     circle
-        [ SVGA.cx (center |> second |> fromFloat)
-        , SVGA.cy (center |> first |> fromFloat)
+        [ SVGA.cx (center.x |> fromFloat)
+        , SVGA.cy (center.y |> fromFloat)
         , SVGA.r (radius |> fromFloat)
         , SVGA.fillOpacity "0"
         , SVGA.stroke "black"
