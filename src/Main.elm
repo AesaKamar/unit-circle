@@ -179,6 +179,10 @@ snapToUnitCircle center radius coord2D =
 
 view : Model -> Html Msg
 view model =
+    let
+        unitCircleShrunkRadius =
+            model.unitCircle.radius / 5
+    in
     div []
         [ svg
             [ SVGA.height (model.screenSize.height |> fromFloat)
@@ -188,17 +192,34 @@ view model =
                 model.unitCircle.radius
 
             -- , viewCenter model.unitCircle.center
-            , viewLocatedPointOnUnitCircle model.unitCircle.center (model.unitCircle.radius / 5) model.activePoint
             , viewUnitCircle model.unitCircle.center
-                (model.unitCircle.radius / 5)
+                unitCircleShrunkRadius
             , viewXAxis model.unitCircle.center model.screenSize.width
             , viewYAxis model.unitCircle.center model.screenSize.height
-            , Html.text
-                (model.activePoint.x |> fromFloat)
-            , Html.text
-                (model.activePoint.y |> fromFloat)
+            , viewLocatedPointOnUnitCircle model.unitCircle.center
+                unitCircleShrunkRadius
+                model.activePoint
+            , viewHypotenuse model.unitCircle.center
+                unitCircleShrunkRadius
+                model.activePoint
             ]
         ]
+
+
+viewHypotenuse center radius currentPos =
+    let
+        snapped =
+            snapToUnitCircle center radius currentPos
+    in
+    line
+        [ SVGA.x1 (center.x |> fromFloat)
+        , SVGA.y1 (center.y |> fromFloat)
+        , SVGA.x2 (snapped.x |> fromFloat)
+        , SVGA.y2 (snapped.y |> fromFloat)
+        , SVGA.stroke "black"
+        , SVGA.strokeWidth "3"
+        ]
+        []
 
 
 viewLocatedPointOnUnitCircle center radius currentPos =
