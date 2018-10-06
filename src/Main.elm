@@ -381,7 +381,7 @@ viewCot center radius currentPos =
 
         farY =
             if centeredY == 0 then
-                0
+                10000000
 
             else
                 (1 / (centeredY / hypotenuse))
