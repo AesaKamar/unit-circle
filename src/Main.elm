@@ -153,6 +153,11 @@ subscriptions model =
         ]
 
 
+type Node
+    = Document
+    | Window
+
+
 snapToUnitCircle : Coord2D -> Float -> Coord2D -> Coord2D
 snapToUnitCircle center radius coord2D =
     let
@@ -181,7 +186,7 @@ view : Model -> Html Msg
 view model =
     let
         unitCircleShrunkRadius =
-            model.unitCircle.radius / 5
+            model.unitCircle.radius / 3
     in
     div []
         [ svg
@@ -190,8 +195,6 @@ view model =
             ]
             [ viewBoundingBox model.unitCircle.boundingBoxTopLeft
                 model.unitCircle.radius
-
-            -- , viewCenter model.unitCircle.center
             , viewUnitCircle model.unitCircle.center
                 unitCircleShrunkRadius
             , viewXAxis model.unitCircle.center model.screenSize.width
@@ -200,6 +203,18 @@ view model =
                 unitCircleShrunkRadius
                 model.activePoint
             , viewHypotenuse model.unitCircle.center
+                unitCircleShrunkRadius
+                model.activePoint
+            , viewSin model.unitCircle.center
+                unitCircleShrunkRadius
+                model.activePoint
+            , viewCos model.unitCircle.center
+                unitCircleShrunkRadius
+                model.activePoint
+            , viewSec model.unitCircle.center
+                unitCircleShrunkRadius
+                model.activePoint
+            , viewCsc model.unitCircle.center
                 unitCircleShrunkRadius
                 model.activePoint
             ]
@@ -217,6 +232,100 @@ viewHypotenuse center radius currentPos =
         , SVGA.x2 (snapped.x |> fromFloat)
         , SVGA.y2 (snapped.y |> fromFloat)
         , SVGA.stroke "black"
+        , SVGA.strokeWidth "3"
+        ]
+        []
+
+
+viewSin center radius currentPos =
+    let
+        snapped =
+            snapToUnitCircle center radius currentPos
+    in
+    line
+        [ SVGA.x1 (snapped.x |> fromFloat)
+        , SVGA.y1 (snapped.y |> fromFloat)
+        , SVGA.x2 (snapped.x |> fromFloat)
+        , SVGA.y2 (center.y |> fromFloat)
+        , SVGA.stroke "red"
+        , SVGA.strokeWidth "3"
+        ]
+        []
+
+
+viewCos center radius currentPos =
+    let
+        snapped =
+            snapToUnitCircle center radius currentPos
+    in
+    line
+        [ SVGA.x1 (snapped.x |> fromFloat)
+        , SVGA.y1 (snapped.y |> fromFloat)
+        , SVGA.x2 (center.x |> fromFloat)
+        , SVGA.y2 (snapped.y |> fromFloat)
+        , SVGA.stroke "blue"
+        , SVGA.strokeWidth "3"
+        ]
+        []
+
+
+viewSec center radius currentPos =
+    let
+        snapped =
+            snapToUnitCircle center radius currentPos
+
+        centeredX =
+            snapped.x - center.x
+
+        hypotenuse =
+            sqrt (((snapped.x - center.x) ^ 2) + ((snapped.y - center.y) ^ 2))
+
+        farX =
+            if centeredX == 0 then
+                0
+
+            else
+                (1 / (centeredX / hypotenuse))
+                    * hypotenuse
+                    + center.x
+    in
+    line
+        [ SVGA.x1 (center.x |> fromFloat)
+        , SVGA.y1 (center.y |> fromFloat)
+        , SVGA.x2 (farX |> fromFloat)
+        , SVGA.y2 (center.y |> fromFloat)
+        , SVGA.stroke "teal"
+        , SVGA.strokeWidth "3"
+        ]
+        []
+
+
+viewCsc center radius currentPos =
+    let
+        snapped =
+            snapToUnitCircle center radius currentPos
+
+        centeredY =
+            snapped.y - center.y
+
+        hypotenuse =
+            sqrt (((snapped.x - center.x) ^ 2) + ((snapped.y - center.y) ^ 2))
+
+        farY =
+            if centeredY == 0 then
+                0
+
+            else
+                (1 / (centeredY / hypotenuse))
+                    * hypotenuse
+                    + center.y
+    in
+    line
+        [ SVGA.x1 (center.x |> fromFloat)
+        , SVGA.y1 (center.y |> fromFloat)
+        , SVGA.x2 (center.x |> fromFloat)
+        , SVGA.y2 (farY |> fromFloat)
+        , SVGA.stroke "pink"
         , SVGA.strokeWidth "3"
         ]
         []
@@ -242,7 +351,7 @@ viewYAxis center height =
         , SVGA.x2 (center.x |> fromFloat)
         , SVGA.y2 (height |> fromFloat)
         , SVGA.strokeWidth "1"
-        , SVGA.stroke "red"
+        , SVGA.stroke "lightgray"
         , SVGA.strokeDasharray "5, 5"
         ]
         []
@@ -255,7 +364,7 @@ viewXAxis center width =
         , SVGA.x2 (width |> fromFloat)
         , SVGA.y2 (center.y |> fromFloat)
         , SVGA.strokeWidth "1"
-        , SVGA.stroke "red"
+        , SVGA.stroke "lightgray"
         , SVGA.strokeDasharray "5, 5"
         ]
         []
