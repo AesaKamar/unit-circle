@@ -199,9 +199,6 @@ view model =
                 unitCircleShrunkRadius
             , viewXAxis model.unitCircle.center model.screenSize.width
             , viewYAxis model.unitCircle.center model.screenSize.height
-            , viewLocatedPointOnUnitCircle model.unitCircle.center
-                unitCircleShrunkRadius
-                model.activePoint
             , viewHypotenuse model.unitCircle.center
                 unitCircleShrunkRadius
                 model.activePoint
@@ -215,6 +212,15 @@ view model =
                 unitCircleShrunkRadius
                 model.activePoint
             , viewCsc model.unitCircle.center
+                unitCircleShrunkRadius
+                model.activePoint
+            , viewTan model.unitCircle.center
+                unitCircleShrunkRadius
+                model.activePoint
+            , viewCot model.unitCircle.center
+                unitCircleShrunkRadius
+                model.activePoint
+            , viewLocatedPointOnUnitCircle model.unitCircle.center
                 unitCircleShrunkRadius
                 model.activePoint
             ]
@@ -326,6 +332,68 @@ viewCsc center radius currentPos =
         , SVGA.x2 (center.x |> fromFloat)
         , SVGA.y2 (farY |> fromFloat)
         , SVGA.stroke "pink"
+        , SVGA.strokeWidth "3"
+        ]
+        []
+
+
+viewTan center radius currentPos =
+    let
+        snapped =
+            snapToUnitCircle center radius currentPos
+
+        centeredX =
+            snapped.x - center.x
+
+        hypotenuse =
+            sqrt (((snapped.x - center.x) ^ 2) + ((snapped.y - center.y) ^ 2))
+
+        farX =
+            if centeredX == 0 then
+                0
+
+            else
+                (1 / (centeredX / hypotenuse))
+                    * hypotenuse
+                    + center.x
+    in
+    line
+        [ SVGA.x1 (snapped.x |> fromFloat)
+        , SVGA.y1 (snapped.y |> fromFloat)
+        , SVGA.x2 (farX |> fromFloat)
+        , SVGA.y2 (center.y |> fromFloat)
+        , SVGA.stroke "tan"
+        , SVGA.strokeWidth "3"
+        ]
+        []
+
+
+viewCot center radius currentPos =
+    let
+        snapped =
+            snapToUnitCircle center radius currentPos
+
+        centeredY =
+            snapped.y - center.y
+
+        hypotenuse =
+            sqrt (((snapped.x - center.x) ^ 2) + ((snapped.y - center.y) ^ 2))
+
+        farY =
+            if centeredY == 0 then
+                0
+
+            else
+                (1 / (centeredY / hypotenuse))
+                    * hypotenuse
+                    + center.y
+    in
+    line
+        [ SVGA.x1 (snapped.x |> fromFloat)
+        , SVGA.y1 (snapped.y |> fromFloat)
+        , SVGA.x2 (center.x |> fromFloat)
+        , SVGA.y2 (farY |> fromFloat)
+        , SVGA.stroke "orange"
         , SVGA.strokeWidth "3"
         ]
         []
