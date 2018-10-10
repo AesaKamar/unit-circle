@@ -193,9 +193,9 @@ view model =
             [ SVGA.height (model.screenSize.height |> fromFloat)
             , SVGA.width (model.screenSize.width |> fromFloat)
             ]
-            [ viewBoundingBox model.unitCircle.boundingBoxTopLeft
-                model.unitCircle.radius
-            , viewUnitCircle model.unitCircle.center
+            [ -- viewBoundingBox model.unitCircle.boundingBoxTopLeft
+              --     model.unitCircle.radius
+              viewUnitCircle model.unitCircle.center
                 unitCircleShrunkRadius
             , viewXAxis model.unitCircle.center model.screenSize.width
             , viewYAxis model.unitCircle.center model.screenSize.height
@@ -350,7 +350,7 @@ viewTan center radius currentPos =
 
         farX =
             if centeredX == 0 then
-                0
+                10000000
 
             else
                 (1 / (centeredX / hypotenuse))
