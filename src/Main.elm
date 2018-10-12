@@ -188,7 +188,7 @@ view model =
         unitCircleShrunkRadius =
             model.unitCircle.radius / 3
 
-        trigIds =
+        anchorPoints =
             calculateTrigIdenties model.unitCircle.center
                 unitCircleShrunkRadius
                 model.activePoint
@@ -204,27 +204,27 @@ view model =
                 unitCircleShrunkRadius
             , viewXAxis model.unitCircle.center model.screenSize.width
             , viewYAxis model.unitCircle.center model.screenSize.height
-            , viewHypotenuse trigIds
-            , viewSin trigIds
-            , viewCos trigIds
-            , viewSec trigIds
-            , viewCsc trigIds
-            , viewTan trigIds
-            , viewCot trigIds
-            , viewLocatedPointOnUnitCircle trigIds
+            , viewHypotenuse anchorPoints
+            , viewSin anchorPoints
+            , viewCos anchorPoints
+            , viewSec anchorPoints
+            , viewCsc anchorPoints
+            , viewTan anchorPoints
+            , viewCot anchorPoints
+            , viewLocatedPointOnUnitCircle anchorPoints
             ]
-        , viewStats
+        , viewStats anchorPoints
         ]
 
 
-type alias TrigIdentities =
+type alias UnitCircleAnchors =
     { pointOnCircle : Coord2D
     , farPoint : Coord2D
     , center : Coord2D
     }
 
 
-calculateTrigIdenties : Coord2D -> Float -> Coord2D -> TrigIdentities
+calculateTrigIdenties : Coord2D -> Float -> Coord2D -> UnitCircleAnchors
 calculateTrigIdenties center radius currentPos =
     let
         snapped =
@@ -263,94 +263,94 @@ calculateTrigIdenties center radius currentPos =
     }
 
 
-viewHypotenuse trigIds =
+viewHypotenuse anchorPoints =
     line
-        [ SVGA.x1 (trigIds.center.x |> fromFloat)
-        , SVGA.y1 (trigIds.center.y |> fromFloat)
-        , SVGA.x2 (trigIds.pointOnCircle.x |> fromFloat)
-        , SVGA.y2 (trigIds.pointOnCircle.y |> fromFloat)
+        [ SVGA.x1 (anchorPoints.center.x |> fromFloat)
+        , SVGA.y1 (anchorPoints.center.y |> fromFloat)
+        , SVGA.x2 (anchorPoints.pointOnCircle.x |> fromFloat)
+        , SVGA.y2 (anchorPoints.pointOnCircle.y |> fromFloat)
         , SVGA.stroke "black"
         , SVGA.strokeWidth "3"
         ]
         []
 
 
-viewSin trigIds =
+viewSin anchorPoints =
     line
-        [ SVGA.x1 (trigIds.pointOnCircle.x |> fromFloat)
-        , SVGA.y1 (trigIds.center.y |> fromFloat)
-        , SVGA.x2 (trigIds.pointOnCircle.x |> fromFloat)
-        , SVGA.y2 (trigIds.pointOnCircle.y |> fromFloat)
+        [ SVGA.x1 (anchorPoints.pointOnCircle.x |> fromFloat)
+        , SVGA.y1 (anchorPoints.center.y |> fromFloat)
+        , SVGA.x2 (anchorPoints.pointOnCircle.x |> fromFloat)
+        , SVGA.y2 (anchorPoints.pointOnCircle.y |> fromFloat)
         , SVGA.stroke "red"
         , SVGA.strokeWidth "3"
         ]
         []
 
 
-viewCos trigIds =
+viewCos anchorPoints =
     line
-        [ SVGA.x1 (trigIds.pointOnCircle.x |> fromFloat)
-        , SVGA.y1 (trigIds.pointOnCircle.y |> fromFloat)
-        , SVGA.x2 (trigIds.center.x |> fromFloat)
-        , SVGA.y2 (trigIds.pointOnCircle.y |> fromFloat)
+        [ SVGA.x1 (anchorPoints.pointOnCircle.x |> fromFloat)
+        , SVGA.y1 (anchorPoints.pointOnCircle.y |> fromFloat)
+        , SVGA.x2 (anchorPoints.center.x |> fromFloat)
+        , SVGA.y2 (anchorPoints.pointOnCircle.y |> fromFloat)
         , SVGA.stroke "blue"
         , SVGA.strokeWidth "3"
         ]
         []
 
 
-viewSec trigIds =
+viewSec anchorPoints =
     line
-        [ SVGA.x1 (trigIds.center.x |> fromFloat)
-        , SVGA.y1 (trigIds.center.y |> fromFloat)
-        , SVGA.x2 (trigIds.farPoint.x |> fromFloat)
-        , SVGA.y2 (trigIds.center.y |> fromFloat)
+        [ SVGA.x1 (anchorPoints.center.x |> fromFloat)
+        , SVGA.y1 (anchorPoints.center.y |> fromFloat)
+        , SVGA.x2 (anchorPoints.farPoint.x |> fromFloat)
+        , SVGA.y2 (anchorPoints.center.y |> fromFloat)
         , SVGA.stroke "teal"
         , SVGA.strokeWidth "3"
         ]
         []
 
 
-viewCsc trigIds =
+viewCsc anchorPoints =
     line
-        [ SVGA.x1 (trigIds.center.x |> fromFloat)
-        , SVGA.y1 (trigIds.center.y |> fromFloat)
-        , SVGA.x2 (trigIds.center.x |> fromFloat)
-        , SVGA.y2 (trigIds.farPoint.y |> fromFloat)
+        [ SVGA.x1 (anchorPoints.center.x |> fromFloat)
+        , SVGA.y1 (anchorPoints.center.y |> fromFloat)
+        , SVGA.x2 (anchorPoints.center.x |> fromFloat)
+        , SVGA.y2 (anchorPoints.farPoint.y |> fromFloat)
         , SVGA.stroke "pink"
         , SVGA.strokeWidth "3"
         ]
         []
 
 
-viewTan trigIds =
+viewTan anchorPoints =
     line
-        [ SVGA.x1 (trigIds.pointOnCircle.x |> fromFloat)
-        , SVGA.y1 (trigIds.pointOnCircle.y |> fromFloat)
-        , SVGA.x2 (trigIds.farPoint.x |> fromFloat)
-        , SVGA.y2 (trigIds.center.y |> fromFloat)
+        [ SVGA.x1 (anchorPoints.pointOnCircle.x |> fromFloat)
+        , SVGA.y1 (anchorPoints.pointOnCircle.y |> fromFloat)
+        , SVGA.x2 (anchorPoints.farPoint.x |> fromFloat)
+        , SVGA.y2 (anchorPoints.center.y |> fromFloat)
         , SVGA.stroke "tan"
         , SVGA.strokeWidth "3"
         ]
         []
 
 
-viewCot trigIds =
+viewCot anchorPoints =
     line
-        [ SVGA.x1 (trigIds.pointOnCircle.x |> fromFloat)
-        , SVGA.y1 (trigIds.pointOnCircle.y |> fromFloat)
-        , SVGA.x2 (trigIds.center.x |> fromFloat)
-        , SVGA.y2 (trigIds.farPoint.y |> fromFloat)
+        [ SVGA.x1 (anchorPoints.pointOnCircle.x |> fromFloat)
+        , SVGA.y1 (anchorPoints.pointOnCircle.y |> fromFloat)
+        , SVGA.x2 (anchorPoints.center.x |> fromFloat)
+        , SVGA.y2 (anchorPoints.farPoint.y |> fromFloat)
         , SVGA.stroke "orange"
         , SVGA.strokeWidth "3"
         ]
         []
 
 
-viewLocatedPointOnUnitCircle trigIds =
+viewLocatedPointOnUnitCircle anchorPoints =
     circle
-        [ SVGA.cx (trigIds.pointOnCircle.x |> fromFloat)
-        , SVGA.cy (trigIds.pointOnCircle.y |> fromFloat)
+        [ SVGA.cx (anchorPoints.pointOnCircle.x |> fromFloat)
+        , SVGA.cy (anchorPoints.pointOnCircle.y |> fromFloat)
         , SVGA.r "6"
         ]
         []
@@ -414,5 +414,23 @@ viewUnitCircle center radius =
         []
 
 
-viewStats =
-    div [] [ HTML.text "String.String" ]
+viewStats anchorPoints =
+    div
+        [ HTMLA.style "position" "absolute"
+        , HTMLA.style "top" "20px"
+        , HTMLA.style "font-family" "monospace"
+        , HTMLA.style "font-weight" "bold"
+        ]
+        [ HTML.p [ HTMLA.style "color" "red" ]
+            [ HTML.text "sin" ]
+        , HTML.p [ HTMLA.style "color" "blue" ]
+            [ HTML.text "cos" ]
+        , HTML.p [ HTMLA.style "color" "tan" ]
+            [ HTML.text "tan" ]
+        , HTML.p [ HTMLA.style "color" "teal" ]
+            [ HTML.text "sec" ]
+        , HTML.p [ HTMLA.style "color" "pink" ]
+            [ HTML.text "csc" ]
+        , HTML.p [ HTMLA.style "color" "orange" ]
+            [ HTML.text "cot" ]
+        ]
