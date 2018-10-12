@@ -187,6 +187,11 @@ view model =
     let
         unitCircleShrunkRadius =
             model.unitCircle.radius / 3
+
+        trigIds =
+            calculateTrigIdenties model.unitCircle.center
+                unitCircleShrunkRadius
+                model.activePoint
     in
     div []
         [ svg
@@ -199,81 +204,17 @@ view model =
                 unitCircleShrunkRadius
             , viewXAxis model.unitCircle.center model.screenSize.width
             , viewYAxis model.unitCircle.center model.screenSize.height
-            , viewHypotenuse model.unitCircle.center
-                unitCircleShrunkRadius
-                model.activePoint
-            , viewSin model.unitCircle.center
-                unitCircleShrunkRadius
-                model.activePoint
-            , viewCos model.unitCircle.center
-                unitCircleShrunkRadius
-                model.activePoint
-            , viewSec model.unitCircle.center
-                unitCircleShrunkRadius
-                model.activePoint
-            , viewCsc model.unitCircle.center
-                unitCircleShrunkRadius
-                model.activePoint
-            , viewTan model.unitCircle.center
-                unitCircleShrunkRadius
-                model.activePoint
-            , viewCot model.unitCircle.center
-                unitCircleShrunkRadius
-                model.activePoint
-            , viewLocatedPointOnUnitCircle model.unitCircle.center
-                unitCircleShrunkRadius
-                model.activePoint
+            , viewHypotenuse trigIds
+            , viewSin trigIds
+            , viewCos trigIds
+            , viewSec trigIds
+            , viewCsc trigIds
+            , viewTan trigIds
+            , viewCot trigIds
+            , viewLocatedPointOnUnitCircle trigIds
             ]
         , viewStats
         ]
-
-
-viewHypotenuse center radius currentPos =
-    let
-        snapped =
-            snapToUnitCircle center radius currentPos
-    in
-    line
-        [ SVGA.x1 (center.x |> fromFloat)
-        , SVGA.y1 (center.y |> fromFloat)
-        , SVGA.x2 (snapped.x |> fromFloat)
-        , SVGA.y2 (snapped.y |> fromFloat)
-        , SVGA.stroke "black"
-        , SVGA.strokeWidth "3"
-        ]
-        []
-
-
-viewSin center radius currentPos =
-    let
-        snapped =
-            snapToUnitCircle center radius currentPos
-    in
-    line
-        [ SVGA.x1 (snapped.x |> fromFloat)
-        , SVGA.y1 (snapped.y |> fromFloat)
-        , SVGA.x2 (snapped.x |> fromFloat)
-        , SVGA.y2 (center.y |> fromFloat)
-        , SVGA.stroke "red"
-        , SVGA.strokeWidth "3"
-        ]
-        []
-
-
-viewCos center radius currentPos =
-    let
-        snapped =
-            snapToUnitCircle center radius currentPos
-    in
-    line
-        [ SVGA.x1 (snapped.x |> fromFloat)
-        , SVGA.y1 (snapped.y |> fromFloat)
-        , SVGA.x2 (center.x |> fromFloat)
-        , SVGA.y2 (snapped.y |> fromFloat)
-        , SVGA.stroke "blue"
-        , SVGA.strokeWidth "3"
-        ]
-        []
 
 
 type alias TrigIdentities =
@@ -311,146 +252,105 @@ calculateTrigIdenties center radius currentPos =
                     + center.y
     in
     { pointOnCircle = snapped
-    , farPoint = snapped
+    , farPoint =
+        { x = farX
+        , y = farY
+        }
     , center =
-        { x = snapped.x - center.x
-        , y = snapped.y - center.y
+        { x = center.x
+        , y = center.y
         }
     }
 
 
-viewSec center radius currentPos =
-    let
-        snapped =
-            snapToUnitCircle center radius currentPos
-
-        centeredX =
-            snapped.x - center.x
-
-        hypotenuse =
-            sqrt (((snapped.x - center.x) ^ 2) + ((snapped.y - center.y) ^ 2))
-
-        farX =
-            if centeredX == 0 then
-                0
-
-            else
-                (1 / (centeredX / hypotenuse))
-                    * hypotenuse
-                    + center.x
-    in
+viewHypotenuse trigIds =
     line
-        [ SVGA.x1 (center.x |> fromFloat)
-        , SVGA.y1 (center.y |> fromFloat)
-        , SVGA.x2 (farX |> fromFloat)
-        , SVGA.y2 (center.y |> fromFloat)
+        [ SVGA.x1 (trigIds.center.x |> fromFloat)
+        , SVGA.y1 (trigIds.center.y |> fromFloat)
+        , SVGA.x2 (trigIds.pointOnCircle.x |> fromFloat)
+        , SVGA.y2 (trigIds.pointOnCircle.y |> fromFloat)
+        , SVGA.stroke "black"
+        , SVGA.strokeWidth "3"
+        ]
+        []
+
+
+viewSin trigIds =
+    line
+        [ SVGA.x1 (trigIds.pointOnCircle.x |> fromFloat)
+        , SVGA.y1 (trigIds.center.y |> fromFloat)
+        , SVGA.x2 (trigIds.pointOnCircle.x |> fromFloat)
+        , SVGA.y2 (trigIds.pointOnCircle.y |> fromFloat)
+        , SVGA.stroke "red"
+        , SVGA.strokeWidth "3"
+        ]
+        []
+
+
+viewCos trigIds =
+    line
+        [ SVGA.x1 (trigIds.pointOnCircle.x |> fromFloat)
+        , SVGA.y1 (trigIds.pointOnCircle.y |> fromFloat)
+        , SVGA.x2 (trigIds.center.x |> fromFloat)
+        , SVGA.y2 (trigIds.pointOnCircle.y |> fromFloat)
+        , SVGA.stroke "blue"
+        , SVGA.strokeWidth "3"
+        ]
+        []
+
+
+viewSec trigIds =
+    line
+        [ SVGA.x1 (trigIds.center.x |> fromFloat)
+        , SVGA.y1 (trigIds.center.y |> fromFloat)
+        , SVGA.x2 (trigIds.farPoint.x |> fromFloat)
+        , SVGA.y2 (trigIds.center.y |> fromFloat)
         , SVGA.stroke "teal"
         , SVGA.strokeWidth "3"
         ]
         []
 
 
-viewCsc center radius currentPos =
-    let
-        snapped =
-            snapToUnitCircle center radius currentPos
-
-        centeredY =
-            snapped.y - center.y
-
-        hypotenuse =
-            sqrt (((snapped.x - center.x) ^ 2) + ((snapped.y - center.y) ^ 2))
-
-        farY =
-            if centeredY == 0 then
-                0
-
-            else
-                (1 / (centeredY / hypotenuse))
-                    * hypotenuse
-                    + center.y
-    in
+viewCsc trigIds =
     line
-        [ SVGA.x1 (center.x |> fromFloat)
-        , SVGA.y1 (center.y |> fromFloat)
-        , SVGA.x2 (center.x |> fromFloat)
-        , SVGA.y2 (farY |> fromFloat)
+        [ SVGA.x1 (trigIds.center.x |> fromFloat)
+        , SVGA.y1 (trigIds.center.y |> fromFloat)
+        , SVGA.x2 (trigIds.center.x |> fromFloat)
+        , SVGA.y2 (trigIds.farPoint.y |> fromFloat)
         , SVGA.stroke "pink"
         , SVGA.strokeWidth "3"
         ]
         []
 
 
-viewTan center radius currentPos =
-    let
-        snapped =
-            snapToUnitCircle center radius currentPos
-
-        centeredX =
-            snapped.x - center.x
-
-        hypotenuse =
-            sqrt (((snapped.x - center.x) ^ 2) + ((snapped.y - center.y) ^ 2))
-
-        farX =
-            if centeredX == 0 then
-                10000000
-
-            else
-                (1 / (centeredX / hypotenuse))
-                    * hypotenuse
-                    + center.x
-    in
+viewTan trigIds =
     line
-        [ SVGA.x1 (snapped.x |> fromFloat)
-        , SVGA.y1 (snapped.y |> fromFloat)
-        , SVGA.x2 (farX |> fromFloat)
-        , SVGA.y2 (center.y |> fromFloat)
+        [ SVGA.x1 (trigIds.pointOnCircle.x |> fromFloat)
+        , SVGA.y1 (trigIds.pointOnCircle.y |> fromFloat)
+        , SVGA.x2 (trigIds.farPoint.x |> fromFloat)
+        , SVGA.y2 (trigIds.center.y |> fromFloat)
         , SVGA.stroke "tan"
         , SVGA.strokeWidth "3"
         ]
         []
 
 
-viewCot center radius currentPos =
-    let
-        snapped =
-            snapToUnitCircle center radius currentPos
-
-        centeredY =
-            snapped.y - center.y
-
-        hypotenuse =
-            sqrt (((snapped.x - center.x) ^ 2) + ((snapped.y - center.y) ^ 2))
-
-        farY =
-            if centeredY == 0 then
-                10000000
-
-            else
-                (1 / (centeredY / hypotenuse))
-                    * hypotenuse
-                    + center.y
-    in
+viewCot trigIds =
     line
-        [ SVGA.x1 (snapped.x |> fromFloat)
-        , SVGA.y1 (snapped.y |> fromFloat)
-        , SVGA.x2 (center.x |> fromFloat)
-        , SVGA.y2 (farY |> fromFloat)
+        [ SVGA.x1 (trigIds.pointOnCircle.x |> fromFloat)
+        , SVGA.y1 (trigIds.pointOnCircle.y |> fromFloat)
+        , SVGA.x2 (trigIds.center.x |> fromFloat)
+        , SVGA.y2 (trigIds.farPoint.y |> fromFloat)
         , SVGA.stroke "orange"
         , SVGA.strokeWidth "3"
         ]
         []
 
 
-viewLocatedPointOnUnitCircle center radius currentPos =
-    let
-        snapped =
-            snapToUnitCircle center radius currentPos
-    in
+viewLocatedPointOnUnitCircle trigIds =
     circle
-        [ SVGA.cx (snapped.x |> fromFloat)
-        , SVGA.cy (snapped.y |> fromFloat)
+        [ SVGA.cx (trigIds.pointOnCircle.x |> fromFloat)
+        , SVGA.cy (trigIds.pointOnCircle.y |> fromFloat)
         , SVGA.r "6"
         ]
         []
