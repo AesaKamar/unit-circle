@@ -3,7 +3,7 @@ module Main exposing (Model, Msg(..), init, main, subscriptions, update, view)
 import Browser
 import Browser.Dom exposing (getViewport)
 import Browser.Events exposing (..)
-import Html exposing (..)
+import Html as HTML exposing (Html, div)
 import Html.Attributes as HTMLA
 import Html.Events exposing (..)
 import Json.Decode exposing (Decoder, field, float, map)
@@ -224,6 +224,7 @@ view model =
                 unitCircleShrunkRadius
                 model.activePoint
             ]
+        , viewStats
         ]
 
 
@@ -273,6 +274,49 @@ viewCos center radius currentPos =
         , SVGA.strokeWidth "3"
         ]
         []
+
+
+type alias TrigIdentities =
+    { pointOnCircle : Coord2D
+    , farPoint : Coord2D
+    , center : Coord2D
+    }
+
+
+calculateTrigIdenties : Coord2D -> Float -> Coord2D -> TrigIdentities
+calculateTrigIdenties center radius currentPos =
+    let
+        snapped =
+            snapToUnitCircle center radius currentPos
+
+        hypotenuse =
+            sqrt (((snapped.x - center.x) ^ 2) + ((snapped.y - center.y) ^ 2))
+
+        farX =
+            if snapped.x - center.x == 0 then
+                1000000000
+
+            else
+                (1 / ((snapped.x - center.x) / hypotenuse))
+                    * hypotenuse
+                    + center.x
+
+        farY =
+            if snapped.y - center.y == 0 then
+                1000000000
+
+            else
+                (1 / ((snapped.y - center.y) / hypotenuse))
+                    * hypotenuse
+                    + center.y
+    in
+    { pointOnCircle = snapped
+    , farPoint = snapped
+    , center =
+        { x = snapped.x - center.x
+        , y = snapped.y - center.y
+        }
+    }
 
 
 viewSec center radius currentPos =
@@ -468,3 +512,7 @@ viewUnitCircle center radius =
         , SVGA.stroke "black"
         ]
         []
+
+
+viewStats =
+    div [] [ HTML.text "String.String" ]
