@@ -604,11 +604,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.ac.I === region.ap.I)
+	if (region.ad.I === region.ap.I)
 	{
-		return 'on line ' + region.ac.I;
+		return 'on line ' + region.ad.I;
 	}
-	return 'on lines ' + region.ac.I + ' through ' + region.ap.I;
+	return 'on lines ' + region.ad.I + ' through ' + region.ap.I;
 }
 
 
@@ -2662,8 +2662,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		s: func(record.s),
-		ad: record.ad,
-		aa: record.aa
+		ae: record.ae,
+		ab: record.ab
 	}
 });
 
@@ -2932,10 +2932,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.s;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ad;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ae;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.aa) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.ab) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -5099,9 +5099,9 @@ var author$project$Main$init = function (_n0) {
 			z: {a: 0, b: 0},
 			p: {k: 0, n: 0},
 			m: {
-				ah: {a: 0, b: 0},
+				ai: {a: 0, b: 0},
 				c: {a: 0, b: 0},
-				ab: 0
+				ac: 0
 			}
 		},
 		A2(
@@ -5566,9 +5566,9 @@ var author$project$Main$update = F2(
 					z: model.z,
 					p: resizedScreen,
 					m: {
-						ah: {a: center.a - radius, b: center.b - radius},
+						ai: {a: center.a - radius, b: center.b - radius},
 						c: center,
-						ab: radius
+						ac: radius
 					}
 				},
 				elm$core$Platform$Cmd$none);
@@ -5919,6 +5919,34 @@ var elm$core$Basics$composeR = F3(
 		return g(
 			f(x));
 	});
+var elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return elm$core$Maybe$Just(x);
+	} else {
+		return elm$core$Maybe$Nothing;
+	}
+};
+var elm$core$Maybe$map = F2(
+	function (f, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return elm$core$Maybe$Just(
+				f(value));
+		} else {
+			return elm$core$Maybe$Nothing;
+		}
+	});
+var elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
 var elm$core$Tuple$second = function (_n0) {
 	var y = _n0.b;
 	return y;
@@ -5926,7 +5954,7 @@ var elm$core$Tuple$second = function (_n0) {
 var elm$svg$Svg$svg = elm$svg$Svg$trustedNode('svg');
 var elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
 var elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
-var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$defaultOptions = {aa: true, ad: false};
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$defaultOptions = {ab: true, ae: false};
 var elm$virtual_dom$VirtualDom$Custom = function (a) {
 	return {$: 3, a: a};
 };
@@ -5943,7 +5971,7 @@ var elm$json$Json$Decode$map5 = _Json_map5;
 var elm$json$Json$Decode$map6 = _Json_map6;
 var mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$Event = F6(
 	function (keys, button, clientPos, offsetPos, pagePos, screenPos) {
-		return {aW: button, aj: clientPos, bf: keys, bj: offsetPos, bn: pagePos, bs: screenPos};
+		return {aW: button, Q: clientPos, bf: keys, bj: offsetPos, bn: pagePos, bs: screenPos};
 	});
 var mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$BackButton = 4;
 var mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$ErrorButton = 0;
@@ -6065,15 +6093,90 @@ var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onWithOptions = F3(
 				function (ev) {
 					return {
 						s: tag(ev),
-						aa: options.aa,
-						ad: options.ad
+						ab: options.ab,
+						ae: options.ae
 					};
 				},
 				mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$eventDecoder));
 	});
 var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onMove = A2(mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onWithOptions, 'pointermove', mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$defaultOptions);
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$defaultOptions = {ab: true, ae: false};
+var elm$json$Json$Decode$map4 = _Json_map4;
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$Event = F4(
+	function (keys, changedTouches, targetTouches, touches) {
+		return {aZ: changedTouches, bf: keys, bx: targetTouches, bB: touches};
+	});
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$Touch = F4(
+	function (identifier, clientPos, pagePos, screenPos) {
+		return {Q: clientPos, bb: identifier, bn: pagePos, bs: screenPos};
+	});
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$touchDecoder = A5(
+	elm$json$Json$Decode$map4,
+	mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$Touch,
+	A2(elm$json$Json$Decode$field, 'identifier', elm$json$Json$Decode$int),
+	mpizenberg$elm_pointer_events$Internal$Decode$clientPos,
+	mpizenberg$elm_pointer_events$Internal$Decode$pagePos,
+	mpizenberg$elm_pointer_events$Internal$Decode$screenPos);
+var elm$json$Json$Decode$andThen = _Json_andThen;
+var mpizenberg$elm_pointer_events$Internal$Decode$all = A2(
+	elm$core$List$foldr,
+	elm$json$Json$Decode$map2(elm$core$List$cons),
+	elm$json$Json$Decode$succeed(_List_Nil));
+var mpizenberg$elm_pointer_events$Internal$Decode$dynamicListOf = function (itemDecoder) {
+	var decodeOne = function (n) {
+		return A2(
+			elm$json$Json$Decode$field,
+			elm$core$String$fromInt(n),
+			itemDecoder);
+	};
+	var decodeN = function (n) {
+		return mpizenberg$elm_pointer_events$Internal$Decode$all(
+			A2(
+				elm$core$List$map,
+				decodeOne,
+				A2(elm$core$List$range, 0, n - 1)));
+	};
+	return A2(
+		elm$json$Json$Decode$andThen,
+		decodeN,
+		A2(elm$json$Json$Decode$field, 'length', elm$json$Json$Decode$int));
+};
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$touchListDecoder = mpizenberg$elm_pointer_events$Internal$Decode$dynamicListOf;
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$eventDecoder = A5(
+	elm$json$Json$Decode$map4,
+	mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$Event,
+	mpizenberg$elm_pointer_events$Internal$Decode$keys,
+	A2(
+		elm$json$Json$Decode$field,
+		'changedTouches',
+		mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$touchListDecoder(mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$touchDecoder)),
+	A2(
+		elm$json$Json$Decode$field,
+		'targetTouches',
+		mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$touchListDecoder(mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$touchDecoder)),
+	A2(
+		elm$json$Json$Decode$field,
+		'touches',
+		mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$touchListDecoder(mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$touchDecoder)));
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$onWithOptions = F3(
+	function (event, options, tag) {
+		return A2(
+			elm$html$Html$Events$custom,
+			event,
+			A2(
+				elm$json$Json$Decode$map,
+				function (ev) {
+					return {
+						s: tag(ev),
+						ab: options.ab,
+						ae: options.ae
+					};
+				},
+				mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$eventDecoder));
+	});
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$onMove = A2(mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$onWithOptions, 'touchmove', mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$defaultOptions);
 var author$project$Main$view = function (model) {
-	var unitCircleShrunkRadius = model.m.ab / 3;
+	var unitCircleShrunkRadius = model.m.ac / 3;
 	var anchorPoints = A3(author$project$Main$calculateAnchorPoints, model.m.c, unitCircleShrunkRadius, model.z);
 	return A2(
 		elm$html$Html$div,
@@ -6083,7 +6186,22 @@ var author$project$Main$view = function (model) {
 				A2(
 					elm$core$Basics$composeR,
 					function (event) {
-						return {a: event.aD.aj.a, b: event.aD.aj.b};
+						return {a: event.aD.Q.a, b: event.aD.Q.b};
+					},
+					author$project$Main$MouseHover)),
+				mpizenberg$elm_pointer_events$Html$Events$Extra$Touch$onMove(
+				A2(
+					elm$core$Basics$composeR,
+					function (touchEvent) {
+						return A2(
+							elm$core$Maybe$withDefault,
+							{a: 0, b: 0},
+							A2(
+								elm$core$Maybe$map,
+								function (ev) {
+									return {a: ev.Q.a, b: ev.Q.b};
+								},
+								elm$core$List$head(touchEvent.aZ)));
 					},
 					author$project$Main$MouseHover)),
 				A2(elm$html$Html$Attributes$style, 'touch-action', 'none'),
