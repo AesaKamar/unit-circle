@@ -6,6 +6,7 @@ import Browser.Events exposing (..)
 import Html as HTML exposing (Html, div)
 import Html.Attributes as HTMLA
 import Html.Events exposing (..)
+import Html.Events.Extra.Pointer as Pointer
 import Json.Decode exposing (Decoder, field, float, map)
 import Random
 import String exposing (fromFloat)
@@ -142,14 +143,6 @@ subscriptions model =
                     , width = x |> toFloat
                     }
             )
-        , onMouseMove
-            (Json.Decode.map
-                MouseHover
-                (Json.Decode.map2 Coord2D
-                    (field "clientX" float)
-                    (field "clientY" float)
-                )
-            )
         ]
 
 
@@ -189,18 +182,25 @@ view model =
             model.unitCircle.radius / 3
 
         anchorPoints =
-            calculateTrigIdenties model.unitCircle.center
+            calculateAnchorPoints model.unitCircle.center
                 unitCircleShrunkRadius
                 model.activePoint
     in
-    div []
+    div
+        [ Pointer.onMove
+            ((\event ->
+                { x = first event.pointer.offsetPos
+                , y = second event.pointer.offsetPos
+                }
+             )
+                >> MouseHover
+            )
+        ]
         [ svg
             [ SVGA.height (model.screenSize.height |> fromFloat)
             , SVGA.width (model.screenSize.width |> fromFloat)
             ]
-            [ -- viewBoundingBox model.unitCircle.boundingBoxTopLeft
-              --     model.unitCircle.radius
-              viewUnitCircle model.unitCircle.center
+            [ viewUnitCircle model.unitCircle.center
                 unitCircleShrunkRadius
             , viewXAxis model.unitCircle.center model.screenSize.width
             , viewYAxis model.unitCircle.center model.screenSize.height
@@ -213,7 +213,8 @@ view model =
             , viewCot anchorPoints
             , viewLocatedPointOnUnitCircle anchorPoints
             ]
-        , viewStats anchorPoints
+
+        -- , viewStats (caluclateTrigValues anchorPoints)
         ]
 
 
@@ -224,14 +225,47 @@ type alias UnitCircleAnchors =
     }
 
 
-calculateTrigIdenties : Coord2D -> Float -> Coord2D -> UnitCircleAnchors
-calculateTrigIdenties center radius currentPos =
+caluclateTrigValues : UnitCircleAnchors -> TrigValues
+caluclateTrigValues unitCircleAnchors =
+    let
+        angle =
+            atan
+                ((unitCircleAnchors.pointOnCircle.y - unitCircleAnchors.center.y)
+                    / (unitCircleAnchors.pointOnCircle.x - unitCircleAnchors.center.x)
+                )
+    in
+    { sin = sin angle
+    , cos = cos angle
+    , tan = tan angle
+    , sec = 1 / sin angle
+    , csc = 1 / cos angle
+    , cot = 1 / tan angle
+    }
+
+
+type alias TrigValues =
+    { sin : Float
+    , cos : Float
+    , tan : Float
+    , sec : Float
+    , csc : Float
+    , cot : Float
+    }
+
+
+distance : Coord2D -> Coord2D -> Float
+distance a b =
+    sqrt (((a.x - b.x) ^ 2) + ((a.y - b.y) ^ 2))
+
+
+calculateAnchorPoints : Coord2D -> Float -> Coord2D -> UnitCircleAnchors
+calculateAnchorPoints center radius currentPos =
     let
         snapped =
             snapToUnitCircle center radius currentPos
 
         hypotenuse =
-            sqrt (((snapped.x - center.x) ^ 2) + ((snapped.y - center.y) ^ 2))
+            distance snapped center
 
         farX =
             if snapped.x - center.x == 0 then
@@ -414,7 +448,7 @@ viewUnitCircle center radius =
         []
 
 
-viewStats anchorPoints =
+viewStats trigValues =
     div
         [ HTMLA.style "position" "absolute"
         , HTMLA.style "top" "20px"
@@ -422,15 +456,15 @@ viewStats anchorPoints =
         , HTMLA.style "font-weight" "bold"
         ]
         [ HTML.p [ HTMLA.style "color" "red" ]
-            [ HTML.text "sin" ]
+            [ HTML.text ("sin = " ++ (trigValues.sin |> fromFloat)) ]
         , HTML.p [ HTMLA.style "color" "blue" ]
-            [ HTML.text "cos" ]
+            [ HTML.text ("cos = " ++ (trigValues.cos |> fromFloat)) ]
         , HTML.p [ HTMLA.style "color" "tan" ]
-            [ HTML.text "tan" ]
+            [ HTML.text ("tan = " ++ (trigValues.tan |> fromFloat)) ]
         , HTML.p [ HTMLA.style "color" "teal" ]
-            [ HTML.text "sec" ]
+            [ HTML.text ("sec = " ++ (trigValues.sec |> fromFloat)) ]
         , HTML.p [ HTMLA.style "color" "pink" ]
-            [ HTML.text "csc" ]
+            [ HTML.text ("csc = " ++ (trigValues.csc |> fromFloat)) ]
         , HTML.p [ HTMLA.style "color" "orange" ]
-            [ HTML.text "cot" ]
+            [ HTML.text ("cot = " ++ (trigValues.cot |> fromFloat)) ]
         ]
