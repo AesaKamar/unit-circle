@@ -196,6 +196,7 @@ view model =
                 >> MouseHover
             )
         , HTMLA.style "touch-action" "none"
+        , HTMLA.style "position" "absolute"
         ]
         [ svg
             [ SVGA.height (model.screenSize.height |> fromFloat)
@@ -455,19 +456,6 @@ viewStats trigValues =
         , HTMLA.style "font-family" "monospace"
         , HTMLA.style "font-weight" "bold"
         ]
-        -- [ HTML.p [ HTMLA.style "color" "red" ]
-        --     [ HTML.text ("sin = " ++ (trigValues.sin |> fromFloat)) ]
-        -- , HTML.p [ HTMLA.style "color" "blue" ]
-        --     [ HTML.text ("cos = " ++ (trigValues.cos |> fromFloat)) ]
-        -- , HTML.p [ HTMLA.style "color" "tan" ]
-        --     [ HTML.text ("tan = " ++ (trigValues.tan |> fromFloat)) ]
-        -- , HTML.p [ HTMLA.style "color" "teal" ]
-        --     [ HTML.text ("sec = " ++ (trigValues.sec |> fromFloat)) ]
-        -- , HTML.p [ HTMLA.style "color" "pink" ]
-        --     [ HTML.text ("csc = " ++ (trigValues.csc |> fromFloat)) ]
-        -- , HTML.p [ HTMLA.style "color" "orange" ]
-        --     [ HTML.text ("cot = " ++ (trigValues.cot |> fromFloat)) ]
-        -- ]
         [ HTML.p [ HTMLA.style "color" "red" ]
             [ HTML.text "sin" ]
         , HTML.p [ HTMLA.style "color" "blue" ]
