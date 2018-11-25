@@ -6,7 +6,8 @@ import Browser.Events exposing (..)
 import Html as HTML exposing (Html, div)
 import Html.Attributes as HTMLA
 import Html.Events exposing (..)
-import Html.Events.Extra.Pointer as Pointer
+import Html.Events.Extra.Pointer as Mouse
+import Html.Events.Extra.Touch as Touch
 import Json.Decode exposing (Decoder, field, float, map)
 import Random
 import String exposing (fromFloat)
@@ -187,11 +188,24 @@ view model =
                 model.activePoint
     in
     div
-        [ Pointer.onMove
+        [ Mouse.onMove
             ((\event ->
                 { x = first event.pointer.clientPos
                 , y = second event.pointer.clientPos
                 }
+             )
+                >> MouseHover
+            )
+        , Touch.onMove
+            ((\touchEvent ->
+                List.head touchEvent.changedTouches
+                    |> Maybe.map
+                        (\ev ->
+                            { x = first ev.clientPos
+                            , y = second ev.clientPos
+                            }
+                        )
+                    |> Maybe.withDefault { x = 0, y = 0 }
              )
                 >> MouseHover
             )
