@@ -5,7 +5,11 @@
   <title>Main</title>
 </head>
 
-<body>
+<body style="overflow: hidden;">
+<iframe
+src="https://ghbtns.com/github-btn.html?user=AesaKamar&repo=unit-circle&type=star&count=true&size=large"
+frameborder="0" scrolling="0" width="160px" height="30px"
+style="position: relative; float: right; padding-top: 30px;"></iframe>
 <div id="elm-f0111bc4e658d0f98db96260c16f7e49"></div>
 <script>
 (function(scope){
@@ -596,11 +600,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.ab.G === region.aj.G)
+	if (region.ac.I === region.ap.I)
 	{
-		return 'on line ' + region.ab.G;
+		return 'on line ' + region.ac.I;
 	}
-	return 'on lines ' + region.ab.G + ' through ' + region.aj.G;
+	return 'on lines ' + region.ac.I + ' through ' + region.ap.I;
 }
 
 
@@ -1851,9 +1855,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a4,
-		impl.bu,
-		impl.bo,
+		impl.bd,
+		impl.bC,
+		impl.bw,
 		function() { return function() {} }
 	);
 });
@@ -2654,7 +2658,7 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		s: func(record.s),
-		ac: record.ac,
+		ad: record.ad,
 		aa: record.aa
 	}
 });
@@ -2924,7 +2928,7 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.s;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ac;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ad;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
 			(tag == 2 ? value.b : tag == 3 && value.aa) && event.preventDefault(),
@@ -3877,11 +3881,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a4,
-		impl.bu,
-		impl.bo,
+		impl.bd,
+		impl.bC,
+		impl.bw,
 		function(sendToApp, initialModel) {
-			var view = impl.bw;
+			var view = impl.bE;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3913,12 +3917,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a4,
-		impl.bu,
-		impl.bo,
+		impl.bd,
+		impl.bC,
+		impl.bw,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.H && impl.H(sendToApp)
-			var view = impl.bw;
+			var divertHrefToApp = impl.J && impl.J(sendToApp)
+			var view = impl.bE;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3926,12 +3930,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aL);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aV);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bs) && (_VirtualDom_doc.title = title = doc.bs);
+				(title !== doc.bA) && (_VirtualDom_doc.title = title = doc.bA);
 			});
 		}
 	);
@@ -3982,12 +3986,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.bb;
-	var onUrlRequest = impl.bc;
+	var onUrlChange = impl.bk;
+	var onUrlRequest = impl.bl;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		H: function(sendToApp)
+		J: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4003,9 +4007,9 @@ function _Browser_application(impl)
 					var next = elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aA === next.aA
-							&& curr.am === next.am
-							&& curr.ax.a === next.ax.a
+							&& curr.aH === next.aH
+							&& curr.as === next.as
+							&& curr.aE.a === next.aE.a
 						)
 							? elm$browser$Browser$Internal(next)
 							: elm$browser$Browser$External(href)
@@ -4013,13 +4017,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		a4: function(flags)
+		bd: function(flags)
 		{
-			return A3(impl.a4, flags, _Browser_getUrl(), key);
+			return A3(impl.bd, flags, _Browser_getUrl(), key);
 		},
-		bw: impl.bw,
-		bu: impl.bu,
-		bo: impl.bo
+		bE: impl.bE,
+		bC: impl.bC,
+		bw: impl.bw
 	});
 }
 
@@ -4085,17 +4089,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { a1: 'hidden', F: 'visibilitychange' }
+		? { ba: 'hidden', H: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { a1: 'mozHidden', F: 'mozvisibilitychange' }
+		? { ba: 'mozHidden', H: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { a1: 'msHidden', F: 'msvisibilitychange' }
+		? { ba: 'msHidden', H: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { a1: 'webkitHidden', F: 'webkitvisibilitychange' }
-		: { a1: 'hidden', F: 'visibilitychange' };
+		? { ba: 'webkitHidden', H: 'webkitvisibilitychange' }
+		: { ba: 'hidden', H: 'visibilitychange' };
 }
 
 
@@ -4176,12 +4180,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aE: _Browser_getScene(),
-		aH: {
+		aL: _Browser_getScene(),
+		aR: {
 			a: _Browser_window.pageXOffset,
 			b: _Browser_window.pageYOffset,
 			n: _Browser_doc.documentElement.clientWidth,
-			l: _Browser_doc.documentElement.clientHeight
+			k: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4192,7 +4196,7 @@ function _Browser_getScene()
 	var elem = _Browser_doc.documentElement;
 	return {
 		n: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		l: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		k: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4215,15 +4219,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aE: {
+			aL: {
 				n: node.scrollWidth,
-				l: node.scrollHeight
+				k: node.scrollHeight
 			},
-			aH: {
+			aR: {
 				a: node.scrollLeft,
 				b: node.scrollTop,
 				n: node.clientWidth,
-				l: node.clientHeight
+				k: node.clientHeight
 			}
 		};
 	});
@@ -4253,18 +4257,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aE: _Browser_getScene(),
-			aH: {
+			aL: _Browser_getScene(),
+			aR: {
 				a: x,
 				b: y,
 				n: _Browser_doc.documentElement.clientWidth,
-				l: _Browser_doc.documentElement.clientHeight
+				k: _Browser_doc.documentElement.clientHeight
 			},
-			aZ: {
+			a6: {
 				a: x + rect.left,
 				b: y + rect.top,
 				n: rect.width,
-				l: rect.height
+				k: rect.height
 			}
 		};
 	});
@@ -4627,25 +4631,25 @@ var elm$core$Basics$sub = _Basics_sub;
 var elm$core$Elm$JsArray$length = _JsArray_length;
 var elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.c) {
+		if (!builder.d) {
 			return A4(
 				elm$core$Array$Array_elm_builtin,
-				elm$core$Elm$JsArray$length(builder.f),
+				elm$core$Elm$JsArray$length(builder.g),
 				elm$core$Array$shiftStep,
 				elm$core$Elm$JsArray$empty,
-				builder.f);
+				builder.g);
 		} else {
-			var treeLen = builder.c * elm$core$Array$branchFactor;
+			var treeLen = builder.d * elm$core$Array$branchFactor;
 			var depth = elm$core$Basics$floor(
 				A2(elm$core$Basics$logBase, elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? elm$core$List$reverse(builder.g) : builder.g;
-			var tree = A2(elm$core$Array$treeFromBuilder, correctNodeList, builder.c);
+			var correctNodeList = reverseNodeList ? elm$core$List$reverse(builder.h) : builder.h;
+			var tree = A2(elm$core$Array$treeFromBuilder, correctNodeList, builder.d);
 			return A4(
 				elm$core$Array$Array_elm_builtin,
-				elm$core$Elm$JsArray$length(builder.f) + treeLen,
+				elm$core$Elm$JsArray$length(builder.g) + treeLen,
 				A2(elm$core$Basics$max, 5, depth * elm$core$Array$shiftStep),
 				tree,
-				builder.f);
+				builder.g);
 		}
 	});
 var elm$core$Basics$idiv = _Basics_idiv;
@@ -4659,7 +4663,7 @@ var elm$core$Array$initializeHelp = F5(
 				return A2(
 					elm$core$Array$builderToArray,
 					false,
-					{g: nodeList, c: (len / elm$core$Array$branchFactor) | 0, f: tail});
+					{h: nodeList, d: (len / elm$core$Array$branchFactor) | 0, g: tail});
 			} else {
 				var leaf = elm$core$Array$Leaf(
 					A3(elm$core$Elm$JsArray$initialize, elm$core$Array$branchFactor, fromIndex, fn));
@@ -4980,7 +4984,7 @@ var elm$core$String$contains = _String_contains;
 var elm$core$String$toInt = _String_toInt;
 var elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {al: fragment, am: host, av: path, ax: port_, aA: protocol, aB: query};
+		return {ar: fragment, as: host, aB: path, aE: port_, aH: protocol, aI: query};
 	});
 var elm$url$Url$chompBeforePath = F5(
 	function (protocol, path, params, frag, str) {
@@ -5088,37 +5092,30 @@ var elm$browser$Browser$Dom$getViewport = _Browser_withWindow(_Browser_getViewpo
 var author$project$Main$init = function (_n0) {
 	return _Utils_Tuple2(
 		{
-			h: {a: 0, b: 0},
-			p: {l: 0, n: 0},
-			d: {
-				V: {a: 0, b: 0},
-				i: {a: 0, b: 0},
-				U: 0
+			z: {a: 0, b: 0},
+			p: {k: 0, n: 0},
+			m: {
+				ah: {a: 0, b: 0},
+				c: {a: 0, b: 0},
+				ab: 0
 			}
 		},
 		A2(
 			elm$core$Task$perform,
 			function (x) {
 				return author$project$Main$ScreenResize(
-					{l: x.aE.l, n: x.aE.n});
+					{k: x.aL.k, n: x.aL.n});
 			},
 			elm$browser$Browser$Dom$getViewport));
 };
-var author$project$Main$Coord2D = F2(
-	function (x, y) {
-		return {a: x, b: y};
-	});
-var author$project$Main$MouseHover = function (a) {
-	return {$: 1, a: a};
-};
-var elm$browser$Browser$Events$Document = 0;
+var elm$browser$Browser$Events$Window = 1;
 var elm$browser$Browser$Events$MySub = F3(
 	function (a, b, c) {
 		return {$: 0, a: a, b: b, c: c};
 	});
 var elm$browser$Browser$Events$State = F2(
 	function (subs, pids) {
-		return {aw: pids, aF: subs};
+		return {aC: pids, aO: subs};
 	});
 var elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
 var elm$core$Dict$empty = elm$core$Dict$RBEmpty_elm_builtin;
@@ -5142,7 +5139,7 @@ var elm$browser$Browser$Events$addKey = function (sub) {
 };
 var elm$browser$Browser$Events$Event = F2(
 	function (key, event) {
-		return {ak: event, an: key};
+		return {aq: event, at: key};
 	});
 var elm$core$Platform$sendToSelf = _Platform_sendToSelf;
 var elm$browser$Browser$Events$spawn = F3(
@@ -5425,7 +5422,7 @@ var elm$browser$Browser$Events$onEffects = F3(
 			stepLeft,
 			stepBoth,
 			stepRight,
-			state.aw,
+			state.aC,
 			elm$core$Dict$fromList(newSubs),
 			_Utils_Tuple3(_List_Nil, elm$core$Dict$empty, _List_Nil));
 		var deadPids = _n0.a;
@@ -5471,8 +5468,8 @@ var elm$core$List$filterMap = F2(
 	});
 var elm$browser$Browser$Events$onSelfMsg = F3(
 	function (router, _n0, state) {
-		var key = _n0.an;
-		var event = _n0.ak;
+		var key = _n0.at;
+		var event = _n0.aq;
 		var toMessage = function (_n2) {
 			var subKey = _n2.a;
 			var _n3 = _n2.b;
@@ -5481,7 +5478,7 @@ var elm$browser$Browser$Events$onSelfMsg = F3(
 			var decoder = _n3.c;
 			return _Utils_eq(subKey, key) ? A2(_Browser_decodeEvent, decoder, event) : elm$core$Maybe$Nothing;
 		};
-		var messages = A2(elm$core$List$filterMap, toMessage, state.aF);
+		var messages = A2(elm$core$List$filterMap, toMessage, state.aO);
 		return A2(
 			elm$core$Task$andThen,
 			function (_n1) {
@@ -5511,8 +5508,6 @@ var elm$browser$Browser$Events$on = F3(
 		return elm$browser$Browser$Events$subscription(
 			A3(elm$browser$Browser$Events$MySub, node, name, decoder));
 	});
-var elm$browser$Browser$Events$onMouseMove = A2(elm$browser$Browser$Events$on, 0, 'mousemove');
-var elm$browser$Browser$Events$Window = 1;
 var elm$json$Json$Decode$field = _Json_decodeField;
 var elm$json$Json$Decode$int = _Json_decodeInt;
 var elm$browser$Browser$Events$onResize = function (func) {
@@ -5530,7 +5525,6 @@ var elm$browser$Browser$Events$onResize = function (func) {
 				A2(elm$json$Json$Decode$field, 'innerHeight', elm$json$Json$Decode$int))));
 };
 var elm$core$Platform$Sub$batch = _Platform_batch;
-var elm$json$Json$Decode$float = _Json_decodeFloat;
 var author$project$Main$subscriptions = function (model) {
 	return elm$core$Platform$Sub$batch(
 		_List_fromArray(
@@ -5539,29 +5533,20 @@ var author$project$Main$subscriptions = function (model) {
 				F2(
 					function (x, y) {
 						return author$project$Main$ScreenResize(
-							{l: y, n: x});
-					})),
-				elm$browser$Browser$Events$onMouseMove(
-				A2(
-					elm$json$Json$Decode$map,
-					author$project$Main$MouseHover,
-					A3(
-						elm$json$Json$Decode$map2,
-						author$project$Main$Coord2D,
-						A2(elm$json$Json$Decode$field, 'clientX', elm$json$Json$Decode$float),
-						A2(elm$json$Json$Decode$field, 'clientY', elm$json$Json$Decode$float))))
+							{k: y, n: x});
+					}))
 			]));
 };
 var author$project$Main$calculateCenter = function (size2d) {
-	return {a: size2d.n / 2, b: size2d.l / 2};
+	return {a: size2d.n / 2, b: size2d.k / 2};
 };
 var elm$core$Basics$min = F2(
 	function (x, y) {
 		return (_Utils_cmp(x, y) < 0) ? x : y;
 	});
 var author$project$Main$constrainToSquare = function (size2d) {
-	var lowerBound = A2(elm$core$Basics$min, size2d.l, size2d.n);
-	return {l: lowerBound, n: lowerBound};
+	var lowerBound = A2(elm$core$Basics$min, size2d.k, size2d.n);
+	return {k: lowerBound, n: lowerBound};
 };
 var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5570,56 +5555,36 @@ var author$project$Main$update = F2(
 		if (!msg.$) {
 			var resizedScreen = msg.a;
 			var constrainingSquare = author$project$Main$constrainToSquare(resizedScreen);
-			var radius = constrainingSquare.l / 2;
+			var radius = constrainingSquare.k / 2;
 			var center = author$project$Main$calculateCenter(resizedScreen);
 			return _Utils_Tuple2(
 				{
-					h: model.h,
+					z: model.z,
 					p: resizedScreen,
-					d: {
-						V: {a: center.a - radius, b: center.b - radius},
-						i: center,
-						U: radius
+					m: {
+						ah: {a: center.a - radius, b: center.b - radius},
+						c: center,
+						ab: radius
 					}
 				},
 				elm$core$Platform$Cmd$none);
 		} else {
 			var coord = msg.a;
 			return _Utils_Tuple2(
-				{h: coord, p: model.p, d: model.d},
+				{z: coord, p: model.p, m: model.m},
 				elm$core$Platform$Cmd$none);
 		}
 	});
-var elm$core$String$fromFloat = _String_fromNumber;
-var elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
-var elm$svg$Svg$rect = elm$svg$Svg$trustedNode('rect');
-var elm$svg$Svg$Attributes$fillOpacity = _VirtualDom_attribute('fill-opacity');
-var elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
-var elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
-var elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
-var elm$svg$Svg$Attributes$x = _VirtualDom_attribute('x');
-var elm$svg$Svg$Attributes$y = _VirtualDom_attribute('y');
-var author$project$Main$viewBoundingBox = F2(
-	function (topLeftPoint, radius) {
-		return A2(
-			elm$svg$Svg$rect,
-			_List_fromArray(
-				[
-					elm$svg$Svg$Attributes$y(
-					elm$core$String$fromFloat(topLeftPoint.b)),
-					elm$svg$Svg$Attributes$x(
-					elm$core$String$fromFloat(topLeftPoint.a)),
-					elm$svg$Svg$Attributes$height(
-					elm$core$String$fromFloat(radius * 2)),
-					elm$svg$Svg$Attributes$width(
-					elm$core$String$fromFloat(radius * 2)),
-					elm$svg$Svg$Attributes$stroke('black'),
-					elm$svg$Svg$Attributes$fillOpacity('0')
-				]),
-			_List_Nil);
-	});
+var author$project$Main$MouseHover = function (a) {
+	return {$: 1, a: a};
+};
 var elm$core$Basics$pow = _Basics_pow;
 var elm$core$Basics$sqrt = _Basics_sqrt;
+var author$project$Main$distance = F2(
+	function (a, b) {
+		return elm$core$Basics$sqrt(
+			A2(elm$core$Basics$pow, a.a - b.a, 2) + A2(elm$core$Basics$pow, a.b - b.b, 2));
+	});
 var author$project$Main$snapToUnitCircle = F3(
 	function (center, radius, coord2D) {
 		var normalized = {a: coord2D.a - center.a, b: coord2D.b - center.b};
@@ -5627,187 +5592,266 @@ var author$project$Main$snapToUnitCircle = F3(
 			A2(elm$core$Basics$pow, normalized.a, 2) + A2(elm$core$Basics$pow, normalized.b, 2));
 		return (!hypotenuse) ? {a: center.a + radius, b: center.b} : {a: ((normalized.a * radius) / hypotenuse) + center.a, b: ((normalized.b * radius) / hypotenuse) + center.b};
 	});
+var author$project$Main$calculateAnchorPoints = F3(
+	function (center, radius, currentPos) {
+		var snapped = A3(author$project$Main$snapToUnitCircle, center, radius, currentPos);
+		var hypotenuse = A2(author$project$Main$distance, snapped, center);
+		var farY = (!(snapped.b - center.b)) ? 1000000000 : (((1 / ((snapped.b - center.b) / hypotenuse)) * hypotenuse) + center.b);
+		var farX = (!(snapped.a - center.a)) ? 1000000000 : (((1 / ((snapped.a - center.a) / hypotenuse)) * hypotenuse) + center.a);
+		return {
+			c: {a: center.a, b: center.b},
+			B: {a: farX, b: farY},
+			e: snapped
+		};
+	});
+var elm$core$Basics$atan = _Basics_atan;
+var elm$core$Basics$cos = _Basics_cos;
+var elm$core$Basics$sin = _Basics_sin;
+var elm$core$Basics$tan = _Basics_tan;
+var author$project$Main$caluclateTrigValues = function (unitCircleAnchors) {
+	var angle = elm$core$Basics$atan((unitCircleAnchors.e.b - unitCircleAnchors.c.b) / (unitCircleAnchors.e.a - unitCircleAnchors.c.a));
+	return {
+		al: elm$core$Basics$cos(angle),
+		am: 1 / elm$core$Basics$tan(angle),
+		an: 1 / elm$core$Basics$cos(angle),
+		aM: 1 / elm$core$Basics$sin(angle),
+		aN: elm$core$Basics$sin(angle),
+		aQ: elm$core$Basics$tan(angle)
+	};
+};
+var elm$core$String$fromFloat = _String_fromNumber;
+var elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var elm$svg$Svg$line = elm$svg$Svg$trustedNode('line');
+var elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
 var elm$svg$Svg$Attributes$strokeWidth = _VirtualDom_attribute('stroke-width');
 var elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
 var elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
 var elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
 var elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
-var author$project$Main$viewCos = F3(
-	function (center, radius, currentPos) {
-		var snapped = A3(author$project$Main$snapToUnitCircle, center, radius, currentPos);
-		return A2(
-			elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					elm$svg$Svg$Attributes$x1(
-					elm$core$String$fromFloat(snapped.a)),
-					elm$svg$Svg$Attributes$y1(
-					elm$core$String$fromFloat(snapped.b)),
-					elm$svg$Svg$Attributes$x2(
-					elm$core$String$fromFloat(center.a)),
-					elm$svg$Svg$Attributes$y2(
-					elm$core$String$fromFloat(snapped.b)),
-					elm$svg$Svg$Attributes$stroke('blue'),
-					elm$svg$Svg$Attributes$strokeWidth('3')
-				]),
-			_List_Nil);
-	});
-var author$project$Main$viewCot = F3(
-	function (center, radius, currentPos) {
-		var snapped = A3(author$project$Main$snapToUnitCircle, center, radius, currentPos);
-		var hypotenuse = elm$core$Basics$sqrt(
-			A2(elm$core$Basics$pow, snapped.a - center.a, 2) + A2(elm$core$Basics$pow, snapped.b - center.b, 2));
-		var centeredY = snapped.b - center.b;
-		var farY = (!centeredY) ? 10000000 : (((1 / (centeredY / hypotenuse)) * hypotenuse) + center.b);
-		return A2(
-			elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					elm$svg$Svg$Attributes$x1(
-					elm$core$String$fromFloat(snapped.a)),
-					elm$svg$Svg$Attributes$y1(
-					elm$core$String$fromFloat(snapped.b)),
-					elm$svg$Svg$Attributes$x2(
-					elm$core$String$fromFloat(center.a)),
-					elm$svg$Svg$Attributes$y2(
-					elm$core$String$fromFloat(farY)),
-					elm$svg$Svg$Attributes$stroke('orange'),
-					elm$svg$Svg$Attributes$strokeWidth('3')
-				]),
-			_List_Nil);
-	});
-var author$project$Main$viewCsc = F3(
-	function (center, radius, currentPos) {
-		var snapped = A3(author$project$Main$snapToUnitCircle, center, radius, currentPos);
-		var hypotenuse = elm$core$Basics$sqrt(
-			A2(elm$core$Basics$pow, snapped.a - center.a, 2) + A2(elm$core$Basics$pow, snapped.b - center.b, 2));
-		var centeredY = snapped.b - center.b;
-		var farY = (!centeredY) ? 0 : (((1 / (centeredY / hypotenuse)) * hypotenuse) + center.b);
-		return A2(
-			elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					elm$svg$Svg$Attributes$x1(
-					elm$core$String$fromFloat(center.a)),
-					elm$svg$Svg$Attributes$y1(
-					elm$core$String$fromFloat(center.b)),
-					elm$svg$Svg$Attributes$x2(
-					elm$core$String$fromFloat(center.a)),
-					elm$svg$Svg$Attributes$y2(
-					elm$core$String$fromFloat(farY)),
-					elm$svg$Svg$Attributes$stroke('pink'),
-					elm$svg$Svg$Attributes$strokeWidth('3')
-				]),
-			_List_Nil);
-	});
-var author$project$Main$viewHypotenuse = F3(
-	function (center, radius, currentPos) {
-		var snapped = A3(author$project$Main$snapToUnitCircle, center, radius, currentPos);
-		return A2(
-			elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					elm$svg$Svg$Attributes$x1(
-					elm$core$String$fromFloat(center.a)),
-					elm$svg$Svg$Attributes$y1(
-					elm$core$String$fromFloat(center.b)),
-					elm$svg$Svg$Attributes$x2(
-					elm$core$String$fromFloat(snapped.a)),
-					elm$svg$Svg$Attributes$y2(
-					elm$core$String$fromFloat(snapped.b)),
-					elm$svg$Svg$Attributes$stroke('black'),
-					elm$svg$Svg$Attributes$strokeWidth('3')
-				]),
-			_List_Nil);
-	});
+var author$project$Main$viewCos = function (anchorPoints) {
+	return A2(
+		elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				elm$svg$Svg$Attributes$x1(
+				elm$core$String$fromFloat(anchorPoints.e.a)),
+				elm$svg$Svg$Attributes$y1(
+				elm$core$String$fromFloat(anchorPoints.e.b)),
+				elm$svg$Svg$Attributes$x2(
+				elm$core$String$fromFloat(anchorPoints.c.a)),
+				elm$svg$Svg$Attributes$y2(
+				elm$core$String$fromFloat(anchorPoints.e.b)),
+				elm$svg$Svg$Attributes$stroke('blue'),
+				elm$svg$Svg$Attributes$strokeWidth('3')
+			]),
+		_List_Nil);
+};
+var author$project$Main$viewCot = function (anchorPoints) {
+	return A2(
+		elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				elm$svg$Svg$Attributes$x1(
+				elm$core$String$fromFloat(anchorPoints.e.a)),
+				elm$svg$Svg$Attributes$y1(
+				elm$core$String$fromFloat(anchorPoints.e.b)),
+				elm$svg$Svg$Attributes$x2(
+				elm$core$String$fromFloat(anchorPoints.c.a)),
+				elm$svg$Svg$Attributes$y2(
+				elm$core$String$fromFloat(anchorPoints.B.b)),
+				elm$svg$Svg$Attributes$stroke('orange'),
+				elm$svg$Svg$Attributes$strokeWidth('3')
+			]),
+		_List_Nil);
+};
+var author$project$Main$viewCsc = function (anchorPoints) {
+	return A2(
+		elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				elm$svg$Svg$Attributes$x1(
+				elm$core$String$fromFloat(anchorPoints.c.a)),
+				elm$svg$Svg$Attributes$y1(
+				elm$core$String$fromFloat(anchorPoints.c.b)),
+				elm$svg$Svg$Attributes$x2(
+				elm$core$String$fromFloat(anchorPoints.c.a)),
+				elm$svg$Svg$Attributes$y2(
+				elm$core$String$fromFloat(anchorPoints.B.b)),
+				elm$svg$Svg$Attributes$stroke('pink'),
+				elm$svg$Svg$Attributes$strokeWidth('3')
+			]),
+		_List_Nil);
+};
+var author$project$Main$viewHypotenuse = function (anchorPoints) {
+	return A2(
+		elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				elm$svg$Svg$Attributes$x1(
+				elm$core$String$fromFloat(anchorPoints.c.a)),
+				elm$svg$Svg$Attributes$y1(
+				elm$core$String$fromFloat(anchorPoints.c.b)),
+				elm$svg$Svg$Attributes$x2(
+				elm$core$String$fromFloat(anchorPoints.e.a)),
+				elm$svg$Svg$Attributes$y2(
+				elm$core$String$fromFloat(anchorPoints.e.b)),
+				elm$svg$Svg$Attributes$stroke('black'),
+				elm$svg$Svg$Attributes$strokeWidth('3')
+			]),
+		_List_Nil);
+};
 var elm$svg$Svg$circle = elm$svg$Svg$trustedNode('circle');
 var elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
 var elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
 var elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
-var author$project$Main$viewLocatedPointOnUnitCircle = F3(
-	function (center, radius, currentPos) {
-		var snapped = A3(author$project$Main$snapToUnitCircle, center, radius, currentPos);
-		return A2(
-			elm$svg$Svg$circle,
-			_List_fromArray(
-				[
-					elm$svg$Svg$Attributes$cx(
-					elm$core$String$fromFloat(snapped.a)),
-					elm$svg$Svg$Attributes$cy(
-					elm$core$String$fromFloat(snapped.b)),
-					elm$svg$Svg$Attributes$r('6')
-				]),
-			_List_Nil);
-	});
-var author$project$Main$viewSec = F3(
-	function (center, radius, currentPos) {
-		var snapped = A3(author$project$Main$snapToUnitCircle, center, radius, currentPos);
-		var hypotenuse = elm$core$Basics$sqrt(
-			A2(elm$core$Basics$pow, snapped.a - center.a, 2) + A2(elm$core$Basics$pow, snapped.b - center.b, 2));
-		var centeredX = snapped.a - center.a;
-		var farX = (!centeredX) ? 0 : (((1 / (centeredX / hypotenuse)) * hypotenuse) + center.a);
-		return A2(
-			elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					elm$svg$Svg$Attributes$x1(
-					elm$core$String$fromFloat(center.a)),
-					elm$svg$Svg$Attributes$y1(
-					elm$core$String$fromFloat(center.b)),
-					elm$svg$Svg$Attributes$x2(
-					elm$core$String$fromFloat(farX)),
-					elm$svg$Svg$Attributes$y2(
-					elm$core$String$fromFloat(center.b)),
-					elm$svg$Svg$Attributes$stroke('teal'),
-					elm$svg$Svg$Attributes$strokeWidth('3')
-				]),
-			_List_Nil);
-	});
-var author$project$Main$viewSin = F3(
-	function (center, radius, currentPos) {
-		var snapped = A3(author$project$Main$snapToUnitCircle, center, radius, currentPos);
-		return A2(
-			elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					elm$svg$Svg$Attributes$x1(
-					elm$core$String$fromFloat(snapped.a)),
-					elm$svg$Svg$Attributes$y1(
-					elm$core$String$fromFloat(snapped.b)),
-					elm$svg$Svg$Attributes$x2(
-					elm$core$String$fromFloat(snapped.a)),
-					elm$svg$Svg$Attributes$y2(
-					elm$core$String$fromFloat(center.b)),
-					elm$svg$Svg$Attributes$stroke('red'),
-					elm$svg$Svg$Attributes$strokeWidth('3')
-				]),
-			_List_Nil);
-	});
-var author$project$Main$viewTan = F3(
-	function (center, radius, currentPos) {
-		var snapped = A3(author$project$Main$snapToUnitCircle, center, radius, currentPos);
-		var hypotenuse = elm$core$Basics$sqrt(
-			A2(elm$core$Basics$pow, snapped.a - center.a, 2) + A2(elm$core$Basics$pow, snapped.b - center.b, 2));
-		var centeredX = snapped.a - center.a;
-		var farX = (!centeredX) ? 0 : (((1 / (centeredX / hypotenuse)) * hypotenuse) + center.a);
-		return A2(
-			elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					elm$svg$Svg$Attributes$x1(
-					elm$core$String$fromFloat(snapped.a)),
-					elm$svg$Svg$Attributes$y1(
-					elm$core$String$fromFloat(snapped.b)),
-					elm$svg$Svg$Attributes$x2(
-					elm$core$String$fromFloat(farX)),
-					elm$svg$Svg$Attributes$y2(
-					elm$core$String$fromFloat(center.b)),
-					elm$svg$Svg$Attributes$stroke('tan'),
-					elm$svg$Svg$Attributes$strokeWidth('3')
-				]),
-			_List_Nil);
-	});
+var author$project$Main$viewLocatedPointOnUnitCircle = function (anchorPoints) {
+	return A2(
+		elm$svg$Svg$circle,
+		_List_fromArray(
+			[
+				elm$svg$Svg$Attributes$cx(
+				elm$core$String$fromFloat(anchorPoints.e.a)),
+				elm$svg$Svg$Attributes$cy(
+				elm$core$String$fromFloat(anchorPoints.e.b)),
+				elm$svg$Svg$Attributes$r('6')
+			]),
+		_List_Nil);
+};
+var author$project$Main$viewSec = function (anchorPoints) {
+	return A2(
+		elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				elm$svg$Svg$Attributes$x1(
+				elm$core$String$fromFloat(anchorPoints.c.a)),
+				elm$svg$Svg$Attributes$y1(
+				elm$core$String$fromFloat(anchorPoints.c.b)),
+				elm$svg$Svg$Attributes$x2(
+				elm$core$String$fromFloat(anchorPoints.B.a)),
+				elm$svg$Svg$Attributes$y2(
+				elm$core$String$fromFloat(anchorPoints.c.b)),
+				elm$svg$Svg$Attributes$stroke('teal'),
+				elm$svg$Svg$Attributes$strokeWidth('3')
+			]),
+		_List_Nil);
+};
+var author$project$Main$viewSin = function (anchorPoints) {
+	return A2(
+		elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				elm$svg$Svg$Attributes$x1(
+				elm$core$String$fromFloat(anchorPoints.e.a)),
+				elm$svg$Svg$Attributes$y1(
+				elm$core$String$fromFloat(anchorPoints.c.b)),
+				elm$svg$Svg$Attributes$x2(
+				elm$core$String$fromFloat(anchorPoints.e.a)),
+				elm$svg$Svg$Attributes$y2(
+				elm$core$String$fromFloat(anchorPoints.e.b)),
+				elm$svg$Svg$Attributes$stroke('red'),
+				elm$svg$Svg$Attributes$strokeWidth('3')
+			]),
+		_List_Nil);
+};
+var elm$html$Html$div = _VirtualDom_node('div');
+var elm$html$Html$p = _VirtualDom_node('p');
+var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
+var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
+var author$project$Main$viewStats = function (trigValues) {
+	return A2(
+		elm$html$Html$div,
+		_List_fromArray(
+			[
+				A2(elm$html$Html$Attributes$style, 'position', 'absolute'),
+				A2(elm$html$Html$Attributes$style, 'top', '20px'),
+				A2(elm$html$Html$Attributes$style, 'font-family', 'monospace'),
+				A2(elm$html$Html$Attributes$style, 'font-weight', 'bold')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$p,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'color', 'red')
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text('sin')
+					])),
+				A2(
+				elm$html$Html$p,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'color', 'blue')
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text('cos')
+					])),
+				A2(
+				elm$html$Html$p,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'color', 'tan')
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text('tan')
+					])),
+				A2(
+				elm$html$Html$p,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'color', 'teal')
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text('sec')
+					])),
+				A2(
+				elm$html$Html$p,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'color', 'pink')
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text('csc')
+					])),
+				A2(
+				elm$html$Html$p,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'color', 'orange')
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text('cot')
+					]))
+			]));
+};
+var author$project$Main$viewTan = function (anchorPoints) {
+	return A2(
+		elm$svg$Svg$line,
+		_List_fromArray(
+			[
+				elm$svg$Svg$Attributes$x1(
+				elm$core$String$fromFloat(anchorPoints.e.a)),
+				elm$svg$Svg$Attributes$y1(
+				elm$core$String$fromFloat(anchorPoints.e.b)),
+				elm$svg$Svg$Attributes$x2(
+				elm$core$String$fromFloat(anchorPoints.B.a)),
+				elm$svg$Svg$Attributes$y2(
+				elm$core$String$fromFloat(anchorPoints.c.b)),
+				elm$svg$Svg$Attributes$stroke('tan'),
+				elm$svg$Svg$Attributes$strokeWidth('3')
+			]),
+		_List_Nil);
+};
+var elm$svg$Svg$Attributes$fillOpacity = _VirtualDom_attribute('fill-opacity');
 var author$project$Main$viewUnitCircle = F2(
 	function (center, radius) {
 		return A2(
@@ -5866,13 +5910,180 @@ var author$project$Main$viewYAxis = F2(
 				]),
 			_List_Nil);
 	});
-var elm$html$Html$div = _VirtualDom_node('div');
+var elm$core$Basics$composeR = F3(
+	function (f, g, x) {
+		return g(
+			f(x));
+	});
+var elm$core$Tuple$second = function (_n0) {
+	var y = _n0.b;
+	return y;
+};
 var elm$svg$Svg$svg = elm$svg$Svg$trustedNode('svg');
+var elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
+var elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$defaultOptions = {aa: true, ad: false};
+var elm$virtual_dom$VirtualDom$Custom = function (a) {
+	return {$: 3, a: a};
+};
+var elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var elm$html$Html$Events$custom = F2(
+	function (event, decoder) {
+		return A2(
+			elm$virtual_dom$VirtualDom$on,
+			event,
+			elm$virtual_dom$VirtualDom$Custom(decoder));
+	});
+var elm$json$Json$Decode$bool = _Json_decodeBool;
+var elm$json$Json$Decode$map5 = _Json_map5;
+var elm$json$Json$Decode$map6 = _Json_map6;
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$Event = F6(
+	function (keys, button, clientPos, offsetPos, pagePos, screenPos) {
+		return {aW: button, aj: clientPos, bf: keys, bj: offsetPos, bn: pagePos, bs: screenPos};
+	});
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$BackButton = 4;
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$ErrorButton = 0;
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$ForwardButton = 5;
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$MainButton = 1;
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$MiddleButton = 2;
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$SecondButton = 3;
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$buttonFromId = function (id) {
+	switch (id) {
+		case 0:
+			return 1;
+		case 1:
+			return 2;
+		case 2:
+			return 3;
+		case 3:
+			return 4;
+		case 4:
+			return 5;
+		default:
+			return 0;
+	}
+};
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$buttonDecoder = A2(
+	elm$json$Json$Decode$map,
+	mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$buttonFromId,
+	A2(elm$json$Json$Decode$field, 'button', elm$json$Json$Decode$int));
+var elm$json$Json$Decode$float = _Json_decodeFloat;
+var mpizenberg$elm_pointer_events$Internal$Decode$clientPos = A3(
+	elm$json$Json$Decode$map2,
+	F2(
+		function (a, b) {
+			return _Utils_Tuple2(a, b);
+		}),
+	A2(elm$json$Json$Decode$field, 'clientX', elm$json$Json$Decode$float),
+	A2(elm$json$Json$Decode$field, 'clientY', elm$json$Json$Decode$float));
+var elm$json$Json$Decode$map3 = _Json_map3;
+var mpizenberg$elm_pointer_events$Internal$Decode$Keys = F3(
+	function (alt, ctrl, shift) {
+		return {aT: alt, a1: ctrl, bt: shift};
+	});
+var mpizenberg$elm_pointer_events$Internal$Decode$keys = A4(
+	elm$json$Json$Decode$map3,
+	mpizenberg$elm_pointer_events$Internal$Decode$Keys,
+	A2(elm$json$Json$Decode$field, 'altKey', elm$json$Json$Decode$bool),
+	A2(elm$json$Json$Decode$field, 'ctrlKey', elm$json$Json$Decode$bool),
+	A2(elm$json$Json$Decode$field, 'shiftKey', elm$json$Json$Decode$bool));
+var mpizenberg$elm_pointer_events$Internal$Decode$offsetPos = A3(
+	elm$json$Json$Decode$map2,
+	F2(
+		function (a, b) {
+			return _Utils_Tuple2(a, b);
+		}),
+	A2(elm$json$Json$Decode$field, 'offsetX', elm$json$Json$Decode$float),
+	A2(elm$json$Json$Decode$field, 'offsetY', elm$json$Json$Decode$float));
+var mpizenberg$elm_pointer_events$Internal$Decode$pagePos = A3(
+	elm$json$Json$Decode$map2,
+	F2(
+		function (a, b) {
+			return _Utils_Tuple2(a, b);
+		}),
+	A2(elm$json$Json$Decode$field, 'pageX', elm$json$Json$Decode$float),
+	A2(elm$json$Json$Decode$field, 'pageY', elm$json$Json$Decode$float));
+var mpizenberg$elm_pointer_events$Internal$Decode$screenPos = A3(
+	elm$json$Json$Decode$map2,
+	F2(
+		function (a, b) {
+			return _Utils_Tuple2(a, b);
+		}),
+	A2(elm$json$Json$Decode$field, 'screenX', elm$json$Json$Decode$float),
+	A2(elm$json$Json$Decode$field, 'screenY', elm$json$Json$Decode$float));
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$eventDecoder = A7(elm$json$Json$Decode$map6, mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$Event, mpizenberg$elm_pointer_events$Internal$Decode$keys, mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$buttonDecoder, mpizenberg$elm_pointer_events$Internal$Decode$clientPos, mpizenberg$elm_pointer_events$Internal$Decode$offsetPos, mpizenberg$elm_pointer_events$Internal$Decode$pagePos, mpizenberg$elm_pointer_events$Internal$Decode$screenPos);
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$Event = F5(
+	function (pointerType, pointer, pointerId, isPrimary, contactDetails) {
+		return {a0: contactDetails, be: isPrimary, aD: pointer, bo: pointerId, bp: pointerType};
+	});
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$ContactDetails = F5(
+	function (width, height, pressure, tiltX, tiltY) {
+		return {k: height, bq: pressure, by: tiltX, bz: tiltY, n: width};
+	});
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$contactDetailsDecoder = A6(
+	elm$json$Json$Decode$map5,
+	mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$ContactDetails,
+	A2(elm$json$Json$Decode$field, 'width', elm$json$Json$Decode$float),
+	A2(elm$json$Json$Decode$field, 'height', elm$json$Json$Decode$float),
+	A2(elm$json$Json$Decode$field, 'pressure', elm$json$Json$Decode$float),
+	A2(elm$json$Json$Decode$field, 'tiltX', elm$json$Json$Decode$float),
+	A2(elm$json$Json$Decode$field, 'tiltY', elm$json$Json$Decode$float));
+var elm$json$Json$Decode$string = _Json_decodeString;
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$MouseType = 0;
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$PenType = 2;
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$TouchType = 1;
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$stringToPointerType = function (str) {
+	switch (str) {
+		case 'pen':
+			return 2;
+		case 'touch':
+			return 1;
+		default:
+			return 0;
+	}
+};
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$pointerTypeDecoder = A2(elm$json$Json$Decode$map, mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$stringToPointerType, elm$json$Json$Decode$string);
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$eventDecoder = A6(
+	elm$json$Json$Decode$map5,
+	mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$Event,
+	A2(elm$json$Json$Decode$field, 'pointerType', mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$pointerTypeDecoder),
+	mpizenberg$elm_pointer_events$Html$Events$Extra$Mouse$eventDecoder,
+	A2(elm$json$Json$Decode$field, 'pointerId', elm$json$Json$Decode$int),
+	A2(elm$json$Json$Decode$field, 'isPrimary', elm$json$Json$Decode$bool),
+	mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$contactDetailsDecoder);
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onWithOptions = F3(
+	function (event, options, tag) {
+		return A2(
+			elm$html$Html$Events$custom,
+			event,
+			A2(
+				elm$json$Json$Decode$map,
+				function (ev) {
+					return {
+						s: tag(ev),
+						aa: options.aa,
+						ad: options.ad
+					};
+				},
+				mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$eventDecoder));
+	});
+var mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onMove = A2(mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onWithOptions, 'pointermove', mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$defaultOptions);
 var author$project$Main$view = function (model) {
-	var unitCircleShrunkRadius = model.d.U / 3;
+	var unitCircleShrunkRadius = model.m.ab / 3;
+	var anchorPoints = A3(author$project$Main$calculateAnchorPoints, model.m.c, unitCircleShrunkRadius, model.z);
 	return A2(
 		elm$html$Html$div,
-		_List_Nil,
+		_List_fromArray(
+			[
+				mpizenberg$elm_pointer_events$Html$Events$Extra$Pointer$onMove(
+				A2(
+					elm$core$Basics$composeR,
+					function (event) {
+						return {a: event.aD.aj.a, b: event.aD.aj.b};
+					},
+					author$project$Main$MouseHover)),
+				A2(elm$html$Html$Attributes$style, 'touch-action', 'none')
+			]),
 		_List_fromArray(
 			[
 				A2(
@@ -5880,30 +6091,31 @@ var author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						elm$svg$Svg$Attributes$height(
-						elm$core$String$fromFloat(model.p.l)),
+						elm$core$String$fromFloat(model.p.k)),
 						elm$svg$Svg$Attributes$width(
 						elm$core$String$fromFloat(model.p.n))
 					]),
 				_List_fromArray(
 					[
-						A2(author$project$Main$viewBoundingBox, model.d.V, model.d.U),
-						A2(author$project$Main$viewUnitCircle, model.d.i, unitCircleShrunkRadius),
-						A2(author$project$Main$viewXAxis, model.d.i, model.p.n),
-						A2(author$project$Main$viewYAxis, model.d.i, model.p.l),
-						A3(author$project$Main$viewHypotenuse, model.d.i, unitCircleShrunkRadius, model.h),
-						A3(author$project$Main$viewSin, model.d.i, unitCircleShrunkRadius, model.h),
-						A3(author$project$Main$viewCos, model.d.i, unitCircleShrunkRadius, model.h),
-						A3(author$project$Main$viewSec, model.d.i, unitCircleShrunkRadius, model.h),
-						A3(author$project$Main$viewCsc, model.d.i, unitCircleShrunkRadius, model.h),
-						A3(author$project$Main$viewTan, model.d.i, unitCircleShrunkRadius, model.h),
-						A3(author$project$Main$viewCot, model.d.i, unitCircleShrunkRadius, model.h),
-						A3(author$project$Main$viewLocatedPointOnUnitCircle, model.d.i, unitCircleShrunkRadius, model.h)
-					]))
+						A2(author$project$Main$viewUnitCircle, model.m.c, unitCircleShrunkRadius),
+						A2(author$project$Main$viewXAxis, model.m.c, model.p.n),
+						A2(author$project$Main$viewYAxis, model.m.c, model.p.k),
+						author$project$Main$viewHypotenuse(anchorPoints),
+						author$project$Main$viewSin(anchorPoints),
+						author$project$Main$viewCos(anchorPoints),
+						author$project$Main$viewSec(anchorPoints),
+						author$project$Main$viewCsc(anchorPoints),
+						author$project$Main$viewTan(anchorPoints),
+						author$project$Main$viewCot(anchorPoints),
+						author$project$Main$viewLocatedPointOnUnitCircle(anchorPoints)
+					])),
+				author$project$Main$viewStats(
+				author$project$Main$caluclateTrigValues(anchorPoints))
 			]));
 };
 var elm$browser$Browser$element = _Browser_element;
 var author$project$Main$main = elm$browser$Browser$element(
-	{a4: author$project$Main$init, bo: author$project$Main$subscriptions, bu: author$project$Main$update, bw: author$project$Main$view});
+	{bd: author$project$Main$init, bw: author$project$Main$subscriptions, bC: author$project$Main$update, bE: author$project$Main$view});
 _Platform_export({'Main':{'init':author$project$Main$main(
 	elm$json$Json$Decode$succeed(0))(0)}});}(this));
 
