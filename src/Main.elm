@@ -189,12 +189,13 @@ view model =
     div
         [ Pointer.onMove
             ((\event ->
-                { x = first event.pointer.offsetPos
-                , y = second event.pointer.offsetPos
+                { x = first event.pointer.clientPos
+                , y = second event.pointer.clientPos
                 }
              )
                 >> MouseHover
             )
+        , HTMLA.style "touch-action" "none"
         ]
         [ svg
             [ SVGA.height (model.screenSize.height |> fromFloat)
